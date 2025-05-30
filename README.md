@@ -11,19 +11,20 @@ This is a game called Dungeon of the Dead Turtles. It is a game where the player
 
 ## 📁 Project Structure
 
+```
 Text-Battle-RPG/
 ├── src/
-│ └── game/
-│ └── textbasedRPG/
-│ ├── GameRunner.java
-│ ├── Player.java
-│ ├── Monster.java
-│ ├── [other class files...]
-│
-├── bin/ # (Ignored in Git)
+│   └── game/
+│       └── textbasedRPG/
+│           ├── GameRunner.java
+│           ├── Player.java
+│           ├── Monster.java
+│           ├── [other class files...]
+├── bin/                 # (Ignored in Git)
 ├── module-info.java
 ├── .gitignore
 └── README.md
+```
 
 ### Requirements To Run
 - Java 12+
