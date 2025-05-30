@@ -9,7 +9,7 @@ public class Giant extends Monster {
 	public Giant(String type, int health, int minDmg, int maxDmg, int level) {
 		super(type, health+((int) (Math.random()*5+5)), 
 				minDmg+((int) (Math.random()*5+5)), maxDmg+((int) (Math.random()*5+5)), level);
-		this.attackModifier = Math.max(Math.random()+1,1.25);
+		this.attackModifier = Math.min(Math.random()+1,1.25);
 	}
 	
 	/**

@@ -6,7 +6,7 @@ public class Zombie extends Monster {
 	
 	public Zombie(String type, int health, int minDmg, int maxDmg, int level) {
 		super(type, health, minDmg, maxDmg, level);
-		this.attackModifier = Math.max(Math.random()+1,1.25);
+		this.attackModifier = Math.min(Math.random()+1,1.25);
 	}
 	
 	public Zombie(String type, int health, int minDmg, int maxDmg, int level, double attackModifier) {

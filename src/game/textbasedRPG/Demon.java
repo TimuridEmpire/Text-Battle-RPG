@@ -9,18 +9,18 @@ public class Demon extends Monster {
 	
 	public Demon(String type, int health, int minDmg, int maxDmg, int level) {
 		super(type, health, minDmg, maxDmg, level);
-		this.attackModifier = Math.max(Math.random()+1,1.5);
-		this.setHealingChance(Math.random());
-		this.setHealingMultiplier(Math.max(Math.random()+1,2));
-		this.setVitalSlashChance(Math.max(Math.random()+1,1.2));
+		this.attackModifier = Math.min(Math.random()+1,1.5);
+		this.setHealingChance(Math.min(Math.random(), 0.5));
+		this.setHealingMultiplier(Math.min(Math.random()+1,2));
+		this.setVitalSlashChance(Math.min(Math.random()+1,1.2));
 	}
 	
 	public Demon(String type, int health, int minDmg, int maxDmg, int level, double attackModifier) {
 		super(type, health, minDmg, maxDmg, level);
 		this.attackModifier = attackModifier;
-		this.setHealingChance(Math.random());
-		this.setHealingMultiplier(Math.max(Math.random()+1,2));
-		this.setVitalSlashChance(Math.max(Math.random()+1,1.2));
+		this.setHealingChance(Math.min(Math.random(), 0.5));
+		this.setHealingMultiplier(Math.min(Math.random()+1,2));
+		this.setVitalSlashChance(Math.min(Math.random()+1,1.2));
 	}
 
 	public double getAttackModifier() {

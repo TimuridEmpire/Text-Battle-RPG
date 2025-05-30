@@ -7,14 +7,14 @@ public class Dragon extends Monster {
 	
 	public Dragon(String type, int health, int minDmg, int maxDmg, int level) {
 		super(type, health, minDmg, (int) (maxDmg*(Math.random()+1)), level);
-		this.attackModifier = Math.max(Math.random()+1,2.0);
-		this.fireBreathingChance = Math.max(Math.random(),0.2);
+		this.attackModifier = Math.min(Math.random()+1,2.0);
+		this.fireBreathingChance = Math.min(Math.random(),0.2);
 	}
 	
 	public Dragon(String type, int health, int minDmg, int maxDmg, int level, double attackModifier) {
 		super(type, health, minDmg, (int) (maxDmg*(Math.random()+1)), level);
 		this.attackModifier = attackModifier;
-		this.fireBreathingChance = Math.max(Math.random(),0.2);
+		this.fireBreathingChance = Math.min(Math.random(),0.2);
 	}
 
 	public double getAttackModifier() {
