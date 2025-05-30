@@ -19,7 +19,11 @@ public class GameRunner {
 		 * After all, if there is an end point then there is something to strive for
 		 */
 		
-		System.out.println("Welcome to a text based RPG game\n\n");
+		System.out.println("Welcome to the Dungeon of the Dead Turtles\n\n");
+		
+		System.out.println("You as the player have been trapped in this dungeon by some unforseen entity");
+		System.out.println("You must make your way out by defeating the dungeon boss, before you get defeated yourself");
+		System.out.println("But first...some introductions...\n");
 		
 		Scanner scan = new Scanner(System.in);
 		String name = getPlayerName(scan);
@@ -40,6 +44,8 @@ public class GameRunner {
 		
 		System.out.println();
 		String mode = getMode(scan);
+		
+		System.out.println("Now the player is ready to begin their quest of escape\n");
 		
 		System.out.println("\n"+player.getName()+" has spotted several monsters in the distance");
 		System.out.println("Type 'quit' to stop playing the game\n");
