@@ -34,7 +34,7 @@ public class Battle {
 	public static Monster createRandomMonster(Player player, String mode) 
 			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException 
 	{
-		String[][] monsterTypes = {{"Zombie","Slime","Witch","Giant"},
+		String[][] monsterTypes = {{"Zombie","Slime","Witch","Giant","Ghost"},
 				{"Dragon", "Troll","Demon"}};
 		Random randomChoice = new Random();
 		String packageName = "game.textbasedRPG.";

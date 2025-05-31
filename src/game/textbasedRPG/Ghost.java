@@ -5,7 +5,7 @@ public class Ghost extends Monster {
 	private double dodgeChance;
 	
 	public Ghost(String type, int health, int minDmg, int maxDmg, int level) {
-		super(type, health, minDmg, maxDmg, level);
+		super(type, health, (int) (minDmg/1.2), (int) (maxDmg/1.2), level);
 		this.dodgeChance = Math.min(Math.random(),0.25);
 	}
 	
@@ -19,7 +19,7 @@ public class Ghost extends Monster {
 	}
 
 	public void setDodgeChance(double dodgeChance) {
-		this.dodgeChance = dodgeChance;
+		this.dodgeChance = Math.min(dodgeChance, 0.30); //capping dodge chance
 	}
 	
 	/**
@@ -27,7 +27,7 @@ public class Ghost extends Monster {
 	 */
 	public void levelUp() {
 		super.levelUp();
-		this.dodgeChance*=1.05;
+		this.setDodgeChance(this.dodgeChance*1.05);
 	}
 	
 	/**
