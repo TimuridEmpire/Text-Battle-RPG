@@ -62,13 +62,9 @@ public class GameRunner {
 				System.out.println("\n");
 				break;
 			}
-			System.out.println("\nThe player has the following stats after the battle:");
-            System.out.println("Health: "+(player.getHealth() < 0 ? 0 : player.getHealth())+", Max Health: "+player.getMaxHealth()+
-            		", Minimum Damage: "+player.getMinDmg()+", Maximum Damage: "+player.getMaxDmg());
-            System.out.println("\n");
             
             if (player.getCanUpgrade()){
-                System.out.println("The player is at the required level to upgrade their class\n");
+                System.out.println("\nThe player is at the required level to upgrade their class\n");
                 player = player.upgradePlayer();
                 System.out.println("The player has been upgraded to a "+player.getClass().getSimpleName()+" and has been healed to full health\n");
                 player.setCanUpgrade(false);

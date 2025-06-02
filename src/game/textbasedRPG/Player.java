@@ -188,6 +188,8 @@ public class Player {
 	    double maxReduction = 60.0;
 	    double reduction = Math.min(defenseBonus, maxReduction);
 	    
+	    System.out.println("Damage was reduced by "+reduction+" points");
+	    
 	    int finalDamage = (int)(damage * (1.0 - reduction / 100.0));
 	    finalDamage = Math.max(finalDamage, 1); // Always take at least 1 damage
 	    

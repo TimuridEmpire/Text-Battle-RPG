@@ -180,7 +180,7 @@ public class Battle {
 			player.setHealth(0);
 			System.err.println("\nPlayer hp is now "+player.getHealth());
 		} else {
-			//print the results once someone has died
+			//print the results once either the player or the monster has died
 			System.out.println();
 			if (player.getIsAlive()) {
 				System.out.println(player.getName()+" has defeated the "+monster.getType());
@@ -199,23 +199,24 @@ public class Battle {
 				 int monsterLevel = monster.getLevel();
 				 int playerLevel = player.getLevel();
 
-				 //leveling up once at least
-				 player.levelUp(monsterLevel);
-				 System.out.println("The player has leveled up");
-				 //Calculates how many more levels the monster has compared to the player's old level minus one for initial level up
-				 int extraLevels = monsterLevel - playerLevel - 1; 
-				 for (int i = 0; i < extraLevels; i++) {
-				     player.levelUp(monsterLevel);
-				     System.out.println("The player has leveled up");
+				 //calculates how many more levels the monster has compared to the player's old level and levels up the player that much
+				 //only levels up the player if the monster is higher level than it
+				 System.out.println();
+				 int extraLevels = monsterLevel - playerLevel; 
+				 if (extraLevels > 0) {
+				     for (int i = 0; i < extraLevels; i++) {
+				         player.levelUp(monsterLevel);
+				         System.out.println("The player has leveled up\n");
+				     }
 				 }
+				 System.out.println("\n");
 				
-				int healAmount = (int) (Math.random()*(player.getMaxHealth()*0.10+1)+player.getMaxHealth()*0.05); //random number 5-15% of max player health
+				int healAmount = (int) (Math.random()*(player.getMaxHealth()*0.05+1)+player.getMaxHealth()*0.05); //random number 5-10% of max player health
 				player.healDamage(healAmount); //heals the player
 				System.out.println(player.getName()+" has been rewarded "+healAmount+" extra points of health");
 				
 				System.out.println("\nThe player is now level "+player.getLevel());
-				
-				System.out.println("The player now has the following stats after the level up:");
+				System.out.println("The player has the following stats after the battle:");
 	            System.out.println("Health: "+(player.getHealth() < 0 ? 0 : player.getHealth())+", Max Health: "+player.getMaxHealth()+
 	            		", Minimum Damage: "+player.getMinDmg()+", Maximum Damage: "+player.getMaxDmg()+"\n");
 			} else {
@@ -233,6 +234,7 @@ public class Battle {
 	public static void playerTurn(Player player, Monster monster, Scanner scan) {
 		//player choice
 		System.out.println("Player inventory: "+player.getInventory());
+		System.out.println("Player wearables: "+Arrays.toString(player.getWearables()));
 		System.out.print("Type an inventory slot (1-n) to use the item in that slot or 0 to attack: \n");
 		String userInput = scan.next();
 		System.out.println("\n");

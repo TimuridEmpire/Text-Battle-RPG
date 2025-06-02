@@ -53,8 +53,10 @@ public class Dragon extends Monster {
 		damage = (int) (damage*(Math.max((double) this.getHealth()/this.getOriginalHealth(),0.5)));
 		
 		if (Math.random() > this.fireBreathingChance) {
-			player.takeDamage(damage/2); //burns the player with fire effect
+			int fireDamage = damage/2;
+			player.takeDamage(fireDamage); //burns the player with fire effect
 			System.out.println("The "+this.getType()+" used fire breathing to burn "+player.getName());
+			System.out.println("The fire damage caused "+fireDamage+" damage");
 		}
 		
 		damage = (int) (player.takeDamage((int) (damage*this.attackModifier))); //gives the damage with the modifier multiplied to it
