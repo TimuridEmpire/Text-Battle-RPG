@@ -195,13 +195,29 @@ public class Battle {
 					 player.receiveWearable(newWearable); 
 				 }
 				
-				player.levelUp(monster.getLevel());
-				System.out.println("The player has leveled up");
+				 //original player and monster levels before leveling up the player
+				 int monsterLevel = monster.getLevel();
+				 int playerLevel = player.getLevel();
+
+				 //leveling up once at least
+				 player.levelUp(monsterLevel);
+				 System.out.println("The player has leveled up");
+				 //Calculates how many more levels the monster has compared to the player's old level minus one for initial level up
+				 int extraLevels = monsterLevel - playerLevel - 1; 
+				 for (int i = 0; i < extraLevels; i++) {
+				     player.levelUp(monsterLevel);
+				     System.out.println("The player has leveled up");
+				 }
 				
 				int healAmount = (int) (Math.random()*(player.getMaxHealth()*0.10+1)+player.getMaxHealth()*0.05); //random number 5-15% of max player health
 				player.healDamage(healAmount); //heals the player
 				System.out.println(player.getName()+" has been rewarded "+healAmount+" extra points of health");
 				
+				System.out.println("\nThe player is now level "+player.getLevel());
+				
+				System.out.println("The player now has the following stats after the level up:");
+	            System.out.println("Health: "+(player.getHealth() < 0 ? 0 : player.getHealth())+", Max Health: "+player.getMaxHealth()+
+	            		", Minimum Damage: "+player.getMinDmg()+", Maximum Damage: "+player.getMaxDmg()+"\n");
 			} else {
 				System.out.println("The "+monster.getType()+" has defeated "+player.getName());
 			}
