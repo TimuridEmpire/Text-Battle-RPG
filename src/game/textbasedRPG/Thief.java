@@ -8,7 +8,7 @@ public class Thief extends Rogue {
 	
 	public Thief(String name, int health, int minDmg, int maxDmg, ArrayList<Item> inventory, int level) {
 		super(name, health, minDmg, maxDmg);
-		this.setAdvancedInventory(inventory);
+		this.setInventory(inventory);
 		this.setLevel(level);
 		this.setStealChance((Math.random()*0.2+0.1)); //0.1-0.3
 	}

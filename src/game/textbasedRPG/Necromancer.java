@@ -9,7 +9,7 @@ public class Necromancer extends Mage {
 
 	public Necromancer(String name, int health, int minDmg, int maxDmg, ArrayList<Item> inventory, int level) {
 		super(name, health, minDmg, maxDmg);
-		this.setAdvancedInventory(inventory);
+		this.setInventory(inventory);
 		this.setLevel(level);
 		this.setMinionAttackChance(Math.random() * 0.3 + 0.2);
 		this.setUndeadCount(5);

@@ -8,7 +8,7 @@ public class Brawler extends Warrior {
 		super(name, health, 
 				(int) (minDmg*(Math.random()*0.5+1.1)), 
 				(int) (maxDmg*(Math.random()*0.5+1.1)));
-		this.setAdvancedInventory(inventory);
+		this.setInventory(inventory);
 		this.setLevel(level);
 }
 }

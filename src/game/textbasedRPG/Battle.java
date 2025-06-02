@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 public class Battle {
@@ -12,7 +13,7 @@ public class Battle {
 	private static boolean continuePlaying = true;
 	
 	/**
-	 * The 
+	 * The battle
 	 * @param player is the player
 	 * @param scan is the scanner
 	 * @throws denotes the exceptions that could be thrown
@@ -21,7 +22,7 @@ public class Battle {
 			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException 
 	{
 		Monster monster = createRandomMonster(player, mode);
-		startBattle(player, monster, scan);
+		battleLogic(player, monster, scan);
 	}
 	
 	
@@ -147,7 +148,7 @@ public class Battle {
 	 * @param monster is the random monster that was generated before
 	 * @param scan is the scanner
 	 */
-	public static void startBattle(Player player, Monster monster, Scanner scan) {
+	public static void battleLogic(Player player, Monster monster, Scanner scan) {
 		int round = 1;
 		System.out.println("\n"+player.getName()+" has encountered a level "+monster.getLevel()+" "+monster.getType()+"\n");
 		while (player.getIsAlive() && monster.getIsAlive()) { //gameplay loop for battle terminates once either the player or monster are dead
@@ -188,11 +189,16 @@ public class Battle {
 				player.recieveItem(loot);
 				System.out.println(player.getName()+" has been rewarded with a "+loot);
 				
-				int healAmount = (int) (Math.random()*10+11); //random number between 10 and 20 inclusive
+				//20% chance when at least one wearable is null
+				 if (Math.random() < 0.2 && Arrays.stream(player.getWearables()).anyMatch(Objects::isNull)) {
+					 Wearable newWearable = getWearable(player);
+					 player.receiveWearable(newWearable); 
+				 }
 				
 				player.levelUp(monster.getLevel());
 				System.out.println("The player has leveled up");
 				
+				int healAmount = (int) (Math.random()*(player.getMaxHealth()*0.10+1)+player.getMaxHealth()*0.05); //random number 5-15% of max player health
 				player.healDamage(healAmount); //heals the player
 				System.out.println(player.getName()+" has been rewarded "+healAmount+" extra points of health");
 				
@@ -201,7 +207,7 @@ public class Battle {
 			}
 		}
 	}
-	
+
 	/**
 	 * The player's turn
 	 * @param player is the player
@@ -314,6 +320,46 @@ public class Battle {
 		}
 		
 		return new Item(type,level);
+	}
+	
+	private static Wearable getWearable(Player player) {
+		double levelRoll = Math.random();
+		//changed the percentage chances of getting each level for balancing reasons
+		int level = 0;
+		if (levelRoll <= 0.05) { 
+			level = (int) (Math.random()*2+9); //legendary
+		} else if (levelRoll <= 0.2) {
+			level = (int) (Math.random()*2+7); //epic
+		} else if (levelRoll <= 0.4) {
+			level = (int) (Math.random()*2+5); //greater
+		} else if (levelRoll <= 0.7) {
+			level = (int) (Math.random()*2+3); //basic
+		} else {
+			level = (int) (Math.random()*2+1); //lesser
+		}
+		
+		String type = "";
+		double typeRoll = Math.random();
+		if (typeRoll >= 0.6) {
+			type = "armor";
+		} else if (typeRoll >= 0.2) {
+			type = "weapon";
+		} else {
+			type = "amulet";
+		}
+		
+		String name = "";
+		if (type.equals("armor")) {
+			name = "Adventurer's Armor";
+		} else if (type.equals("weapon")) {
+			name = "Peasant Weapon";
+		} else if (type.equals("amulet")) {
+			name = "Eye of the Turtle Amulet";
+		} else {
+			name = "Unkown Wearable";
+		}
+		
+		return new Wearable(name, type, level);
 	}
 	
 	/**

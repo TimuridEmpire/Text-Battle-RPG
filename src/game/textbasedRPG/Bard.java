@@ -9,7 +9,7 @@ public class Bard extends Mage {
 
 	public Bard(String name, int health, int minDmg, int maxDmg, ArrayList<Item> inventory, int level) {
 		super(name, health, minDmg, maxDmg);
-		this.setAdvancedInventory(inventory);
+		this.setInventory(inventory);
 		this.setLevel(level);
 		this.setCharmChance(Math.random() * 0.3 + 0.2);
 		this.setHealChance(this.charmChance + 0.1);

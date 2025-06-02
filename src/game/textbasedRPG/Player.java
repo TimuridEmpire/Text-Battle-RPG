@@ -1,15 +1,14 @@
 package game.textbasedRPG;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.lang.Math;
 
 public class Player {
 	
 	private String name;
 	private int health;
-	private Item[] inventory;
-	private ArrayList<Item> advancedInventory;
+	private ArrayList<Item> inventory;
+	private Wearable[] wearables;
 	private int maxHealth;
 	private int minDmg;
 	private int maxDmg;
@@ -31,11 +30,11 @@ public class Player {
 		this.maxHealth = this.health;
 		this.minDmg = (minDmg > 0) ? minDmg : 1;
 		this.maxDmg = (maxDmg > this.minDmg) ? maxDmg : this.minDmg+10;
-		//defaultInventory();
-		defaultAdvancedInventory();
+		defaultInventory();
+		setWearables(new Wearable[5]);
 	}
 	
-	public Player(String name, Item[] inventory) {
+	public Player(String name, ArrayList<Item> inventory) {
 		this.health = this.maxHealth = 100;
 		this.minDmg = 1;
 		this.maxDmg = 10;
@@ -47,31 +46,15 @@ public class Player {
 	}
 	
 	/**
-	 * The default inventory that the player starts out with
-	 */
-	public void defaultInventory() {
-		inventory = new Item[5];
-		inventory[0] = new Item("Health Potion",1);
-		inventory[1] = new Item("Health Potion",2);
-		inventory[2] = new Item("Strength Potion",1);
-		inventory[3] = new Item("Strength Potion",2);
-		inventory[4] = new Item("Mana Potion", 1);
-	}
-	
-	/**
 	 * The default advanced inventory that the player starts out with
 	 */
-	public void defaultAdvancedInventory() {
-		advancedInventory = new ArrayList<Item>();
-		advancedInventory.add(new Item("Health Potion",1));
-		advancedInventory.add(new Item("Health Potion",2));
-		advancedInventory.add(new Item("Strength Potion",1));
-		advancedInventory.add(new Item("Strength Potion",2));
-		advancedInventory.add(new Item("Mana Potion",1));
-	}
-	
-	public void setAdvancedInventory(ArrayList<Item> inventory) {
-		advancedInventory = inventory;
+	public void defaultInventory() {
+		inventory = new ArrayList<Item>();
+		inventory.add(new Item("Health Potion",1));
+		inventory.add(new Item("Health Potion",2));
+		inventory.add(new Item("Strength Potion",1));
+		inventory.add(new Item("Strength Potion",2));
+		inventory.add(new Item("Mana Potion",1));
 	}
 	
 	public String getName() {
@@ -107,6 +90,14 @@ public class Player {
 		return canUpgrade;
 	}
 	
+	public Wearable[] getWearables() {
+		return wearables;
+	}
+
+	public void setWearables(Wearable[] wearables) {
+		this.wearables = wearables;
+	}
+	
 	public void setHealth(int health) {
 		this.health = (health <= this.maxHealth) ? health : this.maxHealth;
 	}
@@ -126,6 +117,10 @@ public class Player {
 
 	public void setCanUpgrade(boolean canUpgrade) {
 		this.canUpgrade = canUpgrade;
+	}
+	
+	public void setInventory(ArrayList<Item> inventory) {
+		this.inventory = inventory;
 	}
 	
 	/* Won't use since we need to increase the level by one every time
@@ -165,6 +160,13 @@ public class Player {
 	 */
 	public int attack(Monster monster) {
 		int damage = (int) (Math.random()*(this.maxDmg-this.minDmg+1)+this.minDmg);
+		double attackBonus = 0.0;
+		for (int i = 0; i < this.wearables.length; i++) {
+			if (this.getWearable(i) != null) {
+				attackBonus += this.getWearable(i).getAttackBonus();
+		    }
+		}
+		damage = (int) (damage * (1.0 + attackBonus / 100.0));
 		damage = monster.takeDamage(damage);
 		return damage;
 	}
@@ -175,30 +177,22 @@ public class Player {
 	 * @returns the damage that the player receives
 	 */
 	public int takeDamage(int damage) {
-		this.setHealth(this.health-damage);
-		return damage;
-	}
-	
-	/**
-	 * Uses the item at the inventory index and sets it to null afterword
-	 * @param index
-	 */
-	public void useItem(int index) {
-		if (this.inventory == null) {
-			try {
-				this.advancedInventory.get(index).use(this);
-				this.advancedInventory.remove(index);
-			} catch(Exception e) {
-				System.out.println("Invalid Selection - Missed Turn");
-			}
-		} else {
-			try {
-				this.inventory[index].use(this);
-				this.inventory[index] = null;
-			} catch(Exception e) {
-				System.out.println("Invalid Selection - Missed Turn");
-			}
-		}
+		double defenseBonus = 0.0;
+	    for (int i = 0; i < this.wearables.length; i++) {
+	        if (this.getWearable(i) != null) {
+	            defenseBonus += this.getWearable(i).getDefenseBonus();
+	        }
+	    }
+	    
+	    //Cap defense reduction at a certain number to avoid taking too little damage
+	    double maxReduction = 60.0;
+	    double reduction = Math.min(defenseBonus, maxReduction);
+	    
+	    int finalDamage = (int)(damage * (1.0 - reduction / 100.0));
+	    finalDamage = Math.max(finalDamage, 1); // Always take at least 1 damage
+	    
+	    this.setHealth(this.health - finalDamage);
+	    return finalDamage;
 	}
 	
 	/**
@@ -229,66 +223,83 @@ public class Player {
 	}
 	
 	/**
-	 * Gets the entire inventory of the player
-	 * Is different depending on if it is an array or an array list
-	 * @returns the array or array list as a string
+	 * Uses the item at the inventory index and removes it afterword
+	 * @param index
 	 */
-	public String getInventory() {
-		if (this.inventory == null) {
-			if (this.advancedInventory.size() > 0) {
-				return (this.advancedInventory.toString());
-			} 
-			return "No Items";
+	public void useItem(int index) {
+		try {
+			this.inventory.get(index).use(this);
+			this.inventory.remove(index);
+		} catch(Exception e) {
+			System.out.println("Invalid Selection - Missed Turn");
 		}
-		return (Arrays.toString(this.inventory));
 	}
 	
+	/**
+	 * Gets the entire inventory of the player
+	 * @returns the array list as a string
+	 */
+	public String getInventory() {
+		if (this.inventory.size() > 0) {
+			return (this.inventory.toString());
+		} 
+		return "No Items";
+}
+	
 	public ArrayList<Item> getInventoryActual(){
-		return this.advancedInventory;
+		return this.inventory;
 	}
 	
 	/**
 	 * Gets the specific inventory item
-	 * Is different depending on if it is an array or an array list
 	 * @param index is the index of the item
 	 * @returns the string form of the item
 	 */
 	public String getInventoryItem(int index) {
-		if (this.inventory == null) {
-			try {
-				return (this.inventory[index].getType());
-			} catch (Exception e) {
-				return "no item";
-			}
-		} else {
-			try {
-				return (this.advancedInventory.get(index).getType());
-			} catch (Exception e) {
-				return "no item";
-			}
+		try {
+			return (this.inventory.get(index).getType());
+		} catch (Exception e) {
+			return "no item";
 		}
 	}
 	
 	/**
-	 * Adds an item to the array or array list depending on which is being used
+	 * Adds an item to the array list
 	 * @param item is the item being added
 	 */
 	public void recieveItem(Item item) {
-		if (this.inventory == null) { //simply adding the item
-			this.advancedInventory.add(item);
-		} else { //putting the item at the first available spot
-			boolean putItem = false;
-			for (int i = 0; i < this.inventory.length; i++) {
-				if (this.inventory[i].equals(null)) {
-					this.inventory[i] = item;
-					putItem = true;
-					break;
-				}
-			}
-			if (!putItem) {
-				System.out.println("No space available to put item");
-			}
-		}
+		this.inventory.add(item);
+	}
+	
+	/**
+	 * Adds a wearable to the first available slot in the equipment array
+	 * @param wearable the wearable item to add
+	 */
+	public void receiveWearable(Wearable wearable) {
+	    boolean placed = false;
+	    for (int i = 0; i < this.wearables.length; i++) {
+	        if (this.wearables[i] == null) {
+	            this.wearables[i] = wearable;
+	            placed = true;
+	            break;
+	        }
+	    }
+	    if (!placed) {
+	        System.out.println("No space available for wearable equipment");
+	    }
+	}
+
+	/**
+	 * Gets a specific wearable from the equipment array
+	 * @param index the slot index (0-4)
+	 * @return the wearable at that slot, or null if empty/invalid index
+	 */
+	public Wearable getWearable(int index) {
+	    try {
+	        return this.wearables[index];
+	    } catch (Exception e) {
+	        return null;
+	    }
 	}
 	
 	public String toString() {
