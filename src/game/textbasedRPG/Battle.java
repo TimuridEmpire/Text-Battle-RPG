@@ -368,9 +368,9 @@ public class Battle {
 		
 		String name = "";
 		if (type.equals("armor")) {
-			name = "Adventurer's Armor";
+			name = "Adventurer's Armor Set";
 		} else if (type.equals("weapon")) {
-			name = "Peasant Weapon";
+			name = "Knight's Sword";
 		} else if (type.equals("amulet")) {
 			name = "Eye of the Turtle Amulet";
 		} else {

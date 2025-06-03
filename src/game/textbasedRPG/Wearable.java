@@ -9,7 +9,6 @@ public class Wearable {
     private double level;
     private double attackBonus;
     private double defenseBonus;
-    private double healthBonus;
     
     public Wearable() {
         this.name = "Unknown Wearable";
@@ -17,7 +16,6 @@ public class Wearable {
         this.level = 1;
         this.attackBonus = 0.0;
         this.defenseBonus = 0.0;
-        this.healthBonus = 0.0;
     }
     
     public Wearable(String name, String type) {
@@ -54,10 +52,6 @@ public class Wearable {
         return this.defenseBonus;
     }
     
-    public double getHealthBonus() {
-        return this.healthBonus;
-    }
-    
     /**
      * Sets the percentage bonuses based on the wearable type and level
      */
@@ -68,20 +62,18 @@ public class Wearable {
         if (this.type.equals("weapon")) {
             this.attackBonus = baseBonus + variation;
             this.defenseBonus = 0.0;
-            this.healthBonus = 0.0;
         } else if (this.type.equals("armor")) {
             this.attackBonus = 0.0;
             this.defenseBonus = baseBonus + variation;
-            this.healthBonus = 0.0;
+
         } else if (this.type.equals("amulet")) {
-            this.attackBonus = 0.0;
-            this.defenseBonus = 0.0;
-            this.healthBonus = baseBonus + variation; //change to amulet protecting against certain effects once effects are made
+            this.attackBonus = baseBonus + variation;
+            this.defenseBonus = baseBonus + variation; //change to amulet protecting against certain effects once effects are made
         }
     }
 
 	public String toString() {
 		return this.name + " (" + this.type + "): level " + this.level + " (attack + " + this.attackBonus
-				+ ", defense + " + this.defenseBonus + ", hp + " + this.healthBonus + ")";
+				+ ", defense + " + this.defenseBonus + ")";
 	}
 }
