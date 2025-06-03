@@ -73,46 +73,30 @@ public class Battle {
 	        		player.getLevel() : rand < 0.7 ? Math.max(player.getLevel()-1,1) 
 	        		: rand < 0.95 ? player.getLevel()+1 : player.getLevel() + (int)(Math.random()*2+2); // +2 or +3
 	        
-	        /* level 1 = 50%, level 2 = 30%, level 3 = 14%, level 4 = 4.8%, level 5 = 1.2% for a player of level 1 
-			 * level 1 = 30%, level 2 = 35%, level 3 = 21%, level 4 = 11.2%, level 5 = 2.8% for a player of level 2 
-			 * level 1 = 20%, level 2 = 32%, level 3 = 24%, level 4 = 16.8%, level 5 = 7.2% for a player of level 3
-			 * level 1 = 0%, level 2 = 20%, level 3 = 32%, level 4 = 28%, level 5 = 19.2% for a player of level 4-5  
-			 * level 1 = 0%, level 2 = 10%, level 3 = 27%, level 4 = 37.8%, level 5 = 25.2% for a player of level 6 
-			 * level 1 = 0%, level 2 = 0%, level 3 = 30%, level 4 = 35%, level 5 = 35% for a player of level 7 
-			 * level 1 = 0%, level 2 = 0%, level 3 = 20%, level 4 = 40%, level 5 = 40% for a player of level 8 
-			 * level 1 = 0%, level 2 = 0%, level 3 = 10%, level 4 = 36%, level 5 = 54% for a player of level 9-11 
-			 * level 1 = 0%, level 2 = 0%, level 3 = 0%, level 4 = 40%, level 5 = 60% for a player of level 12
-			 * level 1 = 0%, level 2 = 0%, level 3 = 0%, level 4 = 30%, level 5 = 70% for a player of level 13-15
-			 * level 1 = 0%, level 2 = 0%, level 3 = 0%, level 4 = 20%, level 5 = 80% for a player of level 16-20
-			 */ //alternate method of monster level scaling
-			/* int monsterLevel = ((int) (Math.random()*10+1) > (int) (5*Math.sqrt(player.getLevel())) ? 1 : 
-				(int) (Math.random()*10+1) > (int) (4*Math.sqrt(player.getLevel())) ? 2 : 
-					(int) (Math.random()*10+1) > (3*Math.sqrt(player.getLevel())) ? 3 : (int) (Math.random()*10+1) > (2*Math.sqrt(player.getLevel())) ? 4 : 5);
-					*/
-	        
-	        //average battle should last around 5 rounds
-	        
 	        //monster hp scales with player damage
-	        double randomFactor = Math.random()*0.25+0.75; // 0.75–1
-	        int monsterHP = (int) Math.random()*10+11; //from 10-20
-	        if (player.getLevel() > 1) {
-	        	monsterHP = (int) (player.getMinDmg()*(player.getLevel()*0.75)*randomFactor); //fights scale in time as game progresses
-	        	monsterHP *= player.getLevel() >= 10 ? 0.75 : 1; //correction for the hp with the higher levels
-	        }
-	        
+	        double avgPlayerDmg = (player.getMinDmg() + player.getMaxDmg()) / 2.0;
+		    //random factor to vary monster hp slightly
+		    double randomFactor = Math.random() * 0.35 + 0.8;  // range: 0.8 to 1.15
+	
+		    //scale difficulty based on player vs monster level
+		    double statScalar;
+		    int levelDiff = player.getLevel() - monsterLevel;
+		    if (levelDiff >= 0) {
+		        statScalar = 1.0 + 0.01 * levelDiff;
+		    } else {
+		        statScalar = 1.0 + 0.1 * levelDiff;
+		        statScalar = Math.max(0.7, statScalar);
+		    }
+		    
+		    //monster should survive about targetRounds number of hits
+		    int targetRounds = 4;
+		    int monsterHP = (int) (avgPlayerDmg * targetRounds * randomFactor * statScalar);
+	
+		    //setting monster damage to be around 12–18% of average player health
+		    double avgMonsterDmg = ((player.getHealth() + player.getMaxHealth()) / 2.0) * (Math.random()*6+12)/100.0;
+		    int monsterMinDmg = Math.max(1, (int) (avgMonsterDmg * 0.8));
+		    int monsterMaxDmg = Math.max(monsterMinDmg + 1, (int) (avgMonsterDmg * 1.1));
 
-	        //damage is average of current and max health of the player divided by an arbitrary factor
-	        double avgMonsterDmg = (player.getMaxHealth()+player.getHealth()/2.0)/7.5;
-	        
-	        //both hp and damage are adjusted for monster level relative to player level (however it is more forgiving if monster is more powerful)
-	        double statScalar = Math.min((((double) player.getLevel())/monsterLevel), 1.1);
-	        monsterHP *= statScalar > 1 ? statScalar : statScalar*0.7;
-	        avgMonsterDmg *= statScalar > 1 ? statScalar : statScalar*0.8;
-
-	        //Giving the monster slight randomness
-	        double dmgVariance = .2; //20% variance
-	        int monsterMinDmg = (int) (avgMonsterDmg*(1.0-dmgVariance));
-	        int monsterMaxDmg = (int) (avgMonsterDmg*(1.0+dmgVariance));
 	        //creates the monster with randomized (but balanced) stats
 	        return (Monster) constructor.newInstance(randomMonster.substring(packageName.length()), monsterHP, 
 	        		monsterMinDmg, monsterMaxDmg, monsterLevel);
@@ -215,7 +199,9 @@ public class Battle {
 				player.healDamage(healAmount); //heals the player
 				System.out.println(player.getName()+" has been rewarded "+healAmount+" extra points of health");
 				
-				System.out.println("\nThe player is now level "+player.getLevel());
+				if (player.getLevel() > playerLevel) { //if the player leveled up
+					System.out.println("\nThe player is now level "+player.getLevel());
+				}	
 				System.out.println("The player has the following stats after the battle:");
 	            System.out.println("Health: "+(player.getHealth() < 0 ? 0 : player.getHealth())+", Max Health: "+player.getMaxHealth()+
 	            		", Minimum Damage: "+player.getMinDmg()+", Maximum Damage: "+player.getMaxDmg()+"\n");
@@ -326,8 +312,8 @@ public class Battle {
 			//30% vitality, 35% strength, 35% health
 			type = Math.random() > 0.7 ? "Vitality Potion" : 
 				Math.random() > 0.5 ? "Strength Potion" : "Health Potion";
-			System.out.println(player.getName()+" recived a "+type+" rune stone");
-			System.out.println("The "+type+" rune stone granted the player extra "+type.substring(0,type.length()-7).toLowerCase());
+			System.out.println(player.getName()+" recived a "+type.substring(0,type.length()-7).toLowerCase()+" rune stone");
+			System.out.println("The "+type.substring(0,type.length()-7).toLowerCase()+" rune stone granted the player extra "+type.substring(0,type.length()-7).toLowerCase());
 			player.recieveItem(new Item(type, level));
 			player.useItem(player.getInventoryActual().size()-1);
 			type = "";

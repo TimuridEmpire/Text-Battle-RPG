@@ -56,8 +56,10 @@ public class Wearable {
      * Sets the percentage bonuses based on the wearable type and level
      */
     private void setBonuses() {
-        double baseBonus = Math.pow(level, 1.2) * 3 + 5; // Base percentage
+        double baseBonus = (this.level/15.0)*100.0; // Base percentage (max 66% and min 6% for level 10 and level 1 respectively)
         double variation = Math.random() * 4 + 1; // 1-5% random variation
+        baseBonus = Math.round(baseBonus);
+        variation = Math.round(variation);
         
         if (this.type.equals("weapon")) {
             this.attackBonus = baseBonus + variation;

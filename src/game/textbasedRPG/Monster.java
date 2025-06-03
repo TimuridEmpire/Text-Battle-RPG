@@ -114,7 +114,7 @@ public class Monster {
 	 */
 	public void levelUp() {
 		this.setLevel(this.getLevel() + 1);
-		this.health += 20;
+		this.health *= 1.1;
 	}
 	
 	/**

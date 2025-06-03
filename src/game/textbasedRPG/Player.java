@@ -1,6 +1,8 @@
 package game.textbasedRPG;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 import java.lang.Math;
 
 public class Player {
@@ -107,8 +109,8 @@ public class Player {
 	}
 	
 	public void setDmg(int minDmg, int maxDmg) {
-		this.minDmg = Math.max(1, minDmg);
-		this.maxDmg = Math.max(this.minDmg,maxDmg);
+		this.maxDmg = Math.max(maxDmg, minDmg);
+		this.minDmg = (int) Math.max(this.maxDmg*0.75, minDmg); //ensures min dmg is always relatively close to max dmg no matter what
 	}
 	
 	public void setLevel(int level) {
@@ -166,6 +168,9 @@ public class Player {
 				attackBonus += this.getWearable(i).getAttackBonus();
 		    }
 		}
+		if (Arrays.stream(this.wearables).anyMatch(Objects::nonNull)) {
+			System.out.println("Attack was increased by "+attackBonus+" percent");
+		}
 		damage = (int) (damage * (1.0 + attackBonus / 100.0));
 		damage = monster.takeDamage(damage);
 		return damage;
@@ -188,9 +193,11 @@ public class Player {
 	    double maxReduction = 60.0;
 	    double reduction = Math.min(defenseBonus, maxReduction);
 	    
-	    System.out.println("Damage was reduced by "+reduction+" points");
+	    if (Arrays.stream(this.wearables).anyMatch(Objects::nonNull)) {
+	    	System.out.println("Damage was reduced by "+reduction+" percent");
+	    }	   
 	    
-	    int finalDamage = (int)(damage * (1.0 - reduction / 100.0));
+	    int finalDamage = (int) (damage * (1.0 - reduction / 100.0));
 	    finalDamage = Math.max(finalDamage, 1); // Always take at least 1 damage
 	    
 	    this.setHealth(this.health - finalDamage);

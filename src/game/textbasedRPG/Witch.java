@@ -52,38 +52,38 @@ public class Witch extends Monster {
 
 		// Level 2 effects
 		effectActions.put("Shockwave Blast", (Player player) -> attack(player, 1, 5));
-		effectActions.put("Fireball", (Player player) -> attack(player, 1.1, 10));
+		effectActions.put("Fireball", (Player player) -> attack(player, 1.1, 5));
 		effectActions.put("Poison Breath", (Player player) -> {
 			attack(player, 1, 5);
 			debuffDamage(player, ((int) Math.random() * 4) + 2);
 		});
-		effectActions.put("Searing Ash", (Player player) -> attack(player, 1.1, 10));
+		effectActions.put("Searing Ash", (Player player) -> attack(player, 1.1, 5));
 
 		// Level 3 effects
 		effectActions.put("Acid Splash", (Player player) -> attack(player, 1.1, 10));
 		effectActions.put("Frost Touch", (Player player) -> attack(player, 1.1, 5));
-		effectActions.put("Thunder Clap", (Player player) -> attack(player, 1, 10));
+		effectActions.put("Thunder Clap", (Player player) -> attack(player, 1, 5));
 		effectActions.put("Poisonous Cloud", (Player player) -> {
-			attack(player, 1.1, 10);
+			attack(player, 1.1, 5);
 			debuffDamage(player, ((int) Math.random() * 2) + 4);
 		});
 
 		// Level 4 effects
-		effectActions.put("Acidic Flame Breath", (Player player) -> attack(player, 1.2, 15));
-		effectActions.put("Flame Spears", (Player player) -> attack(player, 1.2, 15));
+		effectActions.put("Acidic Flame Breath", (Player player) -> attack(player, 1.2, 10));
+		effectActions.put("Flame Spears", (Player player) -> attack(player, 1.2, 10));
 		effectActions.put("Poison Arrows", (Player player) -> {
-			attack(player, 1.1, 15);
+			attack(player, 1.1, 10);
 			debuffDamage(player, ((int) Math.random() * 3) + 4);
 		});
 		effectActions.put("Magnetic Tightening",
-				(Player player) -> debuffDamage(player, ((int) Math.random() * 5) + 12));
-		effectActions.put("Ice Needle Barrage", (Player player) -> attack(player, 1.2, 20));
+				(Player player) -> debuffDamage(player, ((int) Math.random() * 4) + 10));
+		effectActions.put("Ice Needle Barrage", (Player player) -> attack(player, 1.2, 15));
 
 		// Level 5 effects
-		effectActions.put("Tectonic Slam", (Player player) -> attack(player, 1.2, 25));
-		effectActions.put("Ice Spike", (Player player) -> attack(player, 1.2, 25));
+		effectActions.put("Tectonic Slam", (Player player) -> attack(player, 1.2, 15));
+		effectActions.put("Ice Spike", (Player player) -> attack(player, 1.2, 20));
 		effectActions.put("Life Steal", (Player player) -> {
-			attack(player, 1.1, 15);
+			attack(player, 1.1, 10);
 			debuffMaxHealth(player, ((int) Math.random() * 5) + 16);
 			this.setHealth(this.getHealth() + 20);
 			System.out.println("The witch's health was increased to " + this.getHealth());
@@ -93,7 +93,7 @@ public class Witch extends Monster {
 			debuffDamage(player, ((int) Math.random() * 2) + 4);
 		});
 		effectActions.put("Stone Pillars", (Player player) -> {
-			attack(player, 1.1, 25);
+			attack(player, 1.1, 20);
 			debuffDamage(player, ((int) Math.random() * 2) + 4);
 		});
 
@@ -107,12 +107,12 @@ public class Witch extends Monster {
 		effectActions.put("Diamond Rain", (Player player) -> attack(player, 1.2, 20));
 		effectActions.put("Decay", (Player player) -> {
 			attack(player, 1.2, 10);
-			debuffMaxHealth(player, ((int) Math.random() * 5) + 26);
+			debuffMaxHealth(player, ((int) Math.random() * 5) + 22);
 		});
 		effectActions.put("Curse of Weakness", (Player player) -> {
 			attack(player, 1.1, 10);
 			debuffMaxHealth(player, ((int) Math.random() * 6) + 8);
-			debuffDamage(player, ((int) Math.random() * 6) + 12);
+			debuffDamage(player, ((int) Math.random() * 6) + 8);
 		});
 		effectActions.put("Radiation Burst", (Player player) -> attack(player, 1.2, 20));
 
@@ -124,7 +124,7 @@ public class Witch extends Monster {
 		effectActions.put("Dark Magic Pulse", (Player player) -> attack(player, 1.2, 25));
 		effectActions.put("Mind Fragmentation", (Player player) -> {
 			attack(player, 1.1, 20);
-			debuffMaxHealth(player, ((int) Math.random() * 6) + 26);
+			debuffMaxHealth(player, ((int) Math.random() * 6) + 24);
 		});
 
 		// Level 8 effects
@@ -237,7 +237,7 @@ public class Witch extends Monster {
 					- 1][(int) (Math.random() * this.effects[this.getLevel() - 1].length)]; // chooses the effect
 																							// randomly based on level
 		} catch (Exception e) {
-			System.out.println("Add more effects");
+			System.out.println("Random 'I cannot think of any more names for spells' attack");
 		}
 
 		if (effectActions.containsKey(effectChosen)) { // apply the effect if it exists

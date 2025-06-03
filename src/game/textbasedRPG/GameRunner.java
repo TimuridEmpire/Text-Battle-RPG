@@ -10,15 +10,6 @@ public class GameRunner {
 	public static void main(String args[]) 
 			throws Exception 
 	{
-		int numMonsters = 20; //represents the number of monsters that you fight during the game
-		int numMonstersOriginal = numMonsters;
-		/* Note that the game could have made a continue playing (like in the battle class) in this runner class
-		 * and then had the while loop below be while(continuePlaying) while referencing the field in the battle
-		 * class through getters and setters. However the choice was made to make sure that the game had an end
-		 * to add a little bit of story to it so it would not feel infinite and get dull.
-		 * After all, if there is an end point then there is something to strive for
-		 */
-		
 		System.out.println("Welcome to the Dungeon of the Dead Turtles\n\n");
 		
 		System.out.println("You as the player have been trapped in this dungeon by some unforseen entity");
@@ -50,10 +41,12 @@ public class GameRunner {
 		System.out.println("\n"+player.getName()+" has spotted several monsters in the distance");
 		System.out.println("Type 'quit' to stop playing the game\n");
 		
-		while (numMonsters > 0) {
+		int monstersDefeated = 0;
+		
+		while (player.getLevel() <= 20) {
 			//prints the demarcation for the monster battles
 			for (int i = 0; i < 70; i++) { System.out.print("*"); }
-			System.out.print("Monsters Remaining: "+(numMonsters));
+			System.out.print("Monsters Defeated: "+(monstersDefeated));
 			for (int i = 0; i < 70; i++) { System.out.print("*"); }
 			System.out.println("\n");
 			
@@ -73,15 +66,26 @@ public class GameRunner {
                 		", Minimum Damage: "+player.getMinDmg()+", Maximum Damage: "+player.getMaxDmg());
                 System.out.println("\n");
             }
-            
-            numMonsters--;
+            monstersDefeated++;
 		}
 		
 		if (Battle.isContinuingToPlay()) {
 			if (player.getIsAlive()) {
-				System.out.println("The player ("+player.getName()+") has defeated all "+numMonstersOriginal+" enemies");
+				System.out.println("The player ("+player.getName()+") has defeated "+monstersDefeated+" enemies");
+				Thread.sleep(2000);
+				System.out.print("Now they face the biggest obstacle yet");
+				for (int i = 0; i < 3; i++) { System.out.print("."); Thread.sleep(1000); }
+				System.out.println("\nThe dungeon boss has appeared before you\n");
+				Battle.haveBattle(player, scan, mode);
+				if (player.getIsAlive()) {
+					System.out.println("Congratulations, you have defeated the dungeon boss and have thus been able to escape the dungeon");
+					System.out.println("Game over (good ending)");
+				} else {
+					System.out.println("The player died whilst fighting the boss");
+					System.out.println("Game over (bad ending)");
+				}
 			} else {
-				System.out.println("The player ("+player.getName()+") has defeated "+(numMonstersOriginal-numMonsters)+" enemies\n");
+				System.out.println("The player ("+player.getName()+") has defeated "+monstersDefeated+" enemies\n");
 				System.out.println("The player ("+player.getName()+") has died");
 			}
 		} else {
@@ -111,10 +115,12 @@ public class GameRunner {
 				System.err.println();
 				System.err.println("\nI understand it now...\n");
 				Thread.sleep(2000);
+				System.err.println("\nGame over (easter egg good ending?)\n\n");
 				throw new CustomException("Processing overload", new StackOverflowError("System died of overthinking"));
 			} else { //what is supposed to happen
-				System.out.println("\nThe player ("+player.getName()+") has defeated "+(numMonstersOriginal-numMonsters)+" enemies while they were playing\n");
-				System.err.println("\n\nYou should not have quit");
+				System.out.println("\nThe player ("+player.getName()+") has defeated "+monstersDefeated+" enemies while they were playing\n");
+				System.err.println("\n\nYou should not have quit\n\n");
+				System.err.println("Game over (easter egg bad ending)");
 			}
 			
 		}
@@ -157,7 +163,7 @@ public class GameRunner {
 	 */
 	public static String getPlayerName(Scanner scan) {
 		System.out.println("Enter a valid name for the player");
-		String name = scan.next();
+		String name = scan.nextLine();
 		return name;
 	}
 	
@@ -169,7 +175,7 @@ public class GameRunner {
 	public static String getMode(Scanner scan) {
 		System.out.println("Enter a game mode");
 		System.out.println(Arrays.toString(gameModes));
-		String mode = scan.next();
+		String mode = scan.nextLine();
 		if (Arrays.asList(gameModes).contains(mode.toLowerCase())) {
 			return mode;
 		}
@@ -186,7 +192,7 @@ public class GameRunner {
 		String[] subclassArr = {"Warrior","Mage","Rogue"};
 		System.out.println("Enter a valid class for the player");
 		System.out.println("Valid classes are: "+Arrays.toString(subclassArr));
-		String clazz = scan.next();
+		String clazz = scan.nextLine();
 		return clazz.toLowerCase();
 	}
 
