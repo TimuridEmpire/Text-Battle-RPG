@@ -92,8 +92,8 @@ public class Battle {
 		    int targetRounds = 4;
 		    int monsterHP = (int) (avgPlayerDmg * targetRounds * randomFactor * statScalar);
 	
-		    //setting monster damage to be around 18-26% of average player health
-		    double avgMonsterDmg = ((player.getHealth() + player.getMaxHealth()) / 2.0) * (Math.random()*8+18)/100.0;
+		    //setting monster damage to be around 20-30% of average player health
+		    double avgMonsterDmg = ((player.getHealth() + player.getMaxHealth()) / 2.0) * (Math.random()*10+20)/100.0;
 		    int monsterMinDmg = Math.max(1, (int) (avgMonsterDmg * 0.8));
 		    int monsterMaxDmg = Math.max(monsterMinDmg + 1, (int) (avgMonsterDmg * 1.1));
 

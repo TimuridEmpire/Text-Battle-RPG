@@ -24,6 +24,7 @@ public class Player {
 		this.minDmg = 1;
 		this.maxDmg = 10;
 		defaultInventory();
+		setWearables(new Wearable[5]);
 	}
 	
 	public Player(String name, int health, int minDmg, int maxDmg) {
@@ -45,6 +46,7 @@ public class Player {
 		} else {
 			this.inventory = inventory;
 		}
+		setWearables(new Wearable[5]);
 	}
 	
 	/**
@@ -169,7 +171,8 @@ public class Player {
 				attackBonus += this.getWearable(i).getAttackBonus();
 		    }
 		}
-		 //Cap attack bonus at a certain number to avoid doing too much damage
+		
+		//Cap attack bonus at a certain number to avoid doing too much damage
 	    double attackCap = 100.0;
 	    double finalAttackBonus = Math.min(attackCap, attackBonus);
 		

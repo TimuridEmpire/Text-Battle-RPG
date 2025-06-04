@@ -237,7 +237,7 @@ public class Witch extends Monster {
 					- 1][(int) (Math.random() * this.effects[this.getLevel() - 1].length)]; // chooses the effect
 																							// randomly based on level
 		} catch (Exception e) {
-			System.out.println("Random 'I cannot think of any more names for spells' attack");
+			System.out.println("\"I cannot think of any more names for spells\" attack");
 		}
 
 		if (effectActions.containsKey(effectChosen)) { // apply the effect if it exists
