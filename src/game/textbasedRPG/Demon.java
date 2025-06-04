@@ -86,7 +86,7 @@ public class Demon extends Monster {
 		
 		//gives the demon back some health
 		if (Math.random() < this.healingChance) {
-			int heal = (int) (damage*0.1*this.healingMultiplier);
+			int heal = (int) (damage*0.25*this.healingMultiplier);
 			System.out.println("The "+this.getType()+" used "+this.getType()+"ic healing");
 			System.out.println("The "+this.getType()+" healed "+heal+" health");
 			this.setHealth(heal);

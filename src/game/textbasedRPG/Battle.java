@@ -92,8 +92,8 @@ public class Battle {
 		    int targetRounds = 4;
 		    int monsterHP = (int) (avgPlayerDmg * targetRounds * randomFactor * statScalar);
 	
-		    //setting monster damage to be around 12–18% of average player health
-		    double avgMonsterDmg = ((player.getHealth() + player.getMaxHealth()) / 2.0) * (Math.random()*6+12)/100.0;
+		    //setting monster damage to be around 18-26% of average player health
+		    double avgMonsterDmg = ((player.getHealth() + player.getMaxHealth()) / 2.0) * (Math.random()*8+18)/100.0;
 		    int monsterMinDmg = Math.max(1, (int) (avgMonsterDmg * 0.8));
 		    int monsterMaxDmg = Math.max(monsterMinDmg + 1, (int) (avgMonsterDmg * 1.1));
 
@@ -257,8 +257,9 @@ public class Battle {
 		int damage = 0;
 		
 		if (Math.random() < 0.1) {
-			System.out.println("The "+monster.getType()+" has seemingly randomly leveled up\n");
 			monster.levelUp();
+			System.out.println("The "+monster.getType()+" has randomly leveled up");
+			System.out.println("The "+monster.getType()+" is now level "+monster.getLevel()+"\n");
 		}
 		
 		//setting monster equal to witch given the witch's different method of attack

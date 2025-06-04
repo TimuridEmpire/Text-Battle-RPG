@@ -134,7 +134,8 @@ public class Player {
 	 * @param monsterLevel is the level of the monster that they defeated
 	 */
 	public void levelUp(int monsterLevel) {
-        double dmgScale = (this.level == 1) ? 1.1 : 1+Math.log10(this.level)/3.0;
+		//damage and hp scaling (damage scaling slows done after 10 levels)
+        double dmgScale = (this.level == 1) ? 1.1 : (this.level > 10) ? 1+Math.log10(this.level)/3.5 : 1+Math.log10(this.level)/3.0;
         double hpScale = (this.level == 1) ? 1.1 : 1+Math.log10(this.level)/2.5;
         
         this.setDmg((int) (minDmg*dmgScale), (int) (maxDmg*dmgScale));
@@ -168,10 +169,14 @@ public class Player {
 				attackBonus += this.getWearable(i).getAttackBonus();
 		    }
 		}
+		 //Cap attack bonus at a certain number to avoid doing too much damage
+	    double attackCap = 100.0;
+	    double finalAttackBonus = Math.min(attackCap, attackBonus);
+		
 		if (Arrays.stream(this.wearables).anyMatch(Objects::nonNull)) {
-			System.out.println("Attack was increased by "+attackBonus+" percent");
+			System.out.println("Attack was increased by "+finalAttackBonus+" percent");
 		}
-		damage = (int) (damage * (1.0 + attackBonus / 100.0));
+		damage = (int) (damage * (1.0 + finalAttackBonus / 100.0));
 		damage = monster.takeDamage(damage);
 		return damage;
 	}
@@ -190,7 +195,7 @@ public class Player {
 	    }
 	    
 	    //Cap defense reduction at a certain number to avoid taking too little damage
-	    double maxReduction = 60.0;
+	    double maxReduction = 50.0;
 	    double reduction = Math.min(defenseBonus, maxReduction);
 	    
 	    if (Arrays.stream(this.wearables).anyMatch(Objects::nonNull)) {
