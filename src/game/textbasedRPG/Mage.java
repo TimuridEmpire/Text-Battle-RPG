@@ -29,7 +29,7 @@ public class Mage extends Player {
 	 * @returns the amount of attack damage that was dealt
 	 */
 	public int attack(Monster monster) {
-		int manaCost = (int) (Math.random() * (this.maxMana / 2) + 1);
+		int manaCost = (int) (Math.random() * 1.5 * (this.maxMana / 2) + 1);
 		if (this.mana >= manaCost) {
 			return manaAttack(manaCost, monster);
 		}

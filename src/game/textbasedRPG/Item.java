@@ -48,7 +48,7 @@ public class Item {
 			player.getStrong((int) (potency*player.getMinDmg()));
 			System.out.println(player.getName()+"'s strength was increased to the range of "+player.getMinDmg()+" to "+player.getMaxDmg());
 		} else if (this.type.equals("Mana Potion")) {
-			if (player.getClass().getSimpleName().equals("Mage")) {
+			if (player instanceof Mage) {
 				((Mage) player).restoreMana((int) (potency*((Mage) player).getMaxMana()));
 				System.out.println(player.getName()+"'s mana was increased to "+((Mage) player).getMana());
 			} else {

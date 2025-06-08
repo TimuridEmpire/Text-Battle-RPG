@@ -30,6 +30,20 @@ public class Necromancer extends Mage {
 	public void setUndeadCount(int undeadCount) {
 		this.undeadCount = undeadCount;
 	}
+	
+	/**
+	 * Levels up the player based on the monster that they defeated
+	 * 
+	 * @param monsterLevel is the level of the monster that they defeated
+	 */
+	public void levelUp(int monsterLevel) {
+		super.levelUp(monsterLevel);
+		if (Math.random() < ((monsterLevel%10)/20.0)) { //chance to get minion increases the more monsterLevel increases but resets every so often
+			this.undeadCount++;
+			System.out.println("The number of your undead minions has increased");
+			System.out.println("You now have "+this.undeadCount+" number of undead minions");
+		}
+	}
 
 	/**
 	 * Deals damage to the monster if there is enough mana to spare 
@@ -42,8 +56,9 @@ public class Necromancer extends Mage {
 		if (Math.random() < this.minionAttackChance) {
 			System.out.println("The player summoned their undead minions");
 			for (int i = 0; i < undeadCount; i++) {
-				monster.takeDamage((int) (damage / 5));
-				System.out.println("The undead minion did "+((int) (damage / 5))+" damage");
+				int minionDamage = damage/10;
+				monster.takeDamage(minionDamage);
+				System.out.println("The undead minion did "+minionDamage+" damage");
 			}
 			System.out.println("The monster took more damage as a result");
 		}
