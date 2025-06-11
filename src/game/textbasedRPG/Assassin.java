@@ -41,7 +41,7 @@ public class Assassin extends Rogue {
 			int damage = (int) (Math.random()*(this.getMaxDmg()-this.getMinDmg()+1)
 					+this.getMinDmg()); 
 			//multiplies damage by random variable (like rogue superclass crit but better)
-			damage *= Math.random()*2+2;
+			damage *= Math.random()*2+2.5;
 			damage = (int) damage;
 			damage = monster.takeDamage(damage);
 			if (monster.getIsAlive()) {
