@@ -2,7 +2,7 @@ package game.textbasedRPG;
 
 import java.lang.Math;
 
-public class Monster {
+public class Monster extends Entity {
 	
 	private String type;
 	private int health;
@@ -99,6 +99,7 @@ public class Monster {
 		return damage;
 	}
 	
+	@Override
 	/**
 	 * Decreases the health of the monster by a set amount
 	 * @param damage is the damage dealt to the monster
@@ -117,6 +118,7 @@ public class Monster {
 		this.health *= 1.1;
 	}
 	
+	@Override
 	/**
 	 * Heals the monster's damage
 	 * @param amount is the amount that it is healed by
@@ -125,6 +127,25 @@ public class Monster {
 		this.setHealth(this.getHealth()+amount);
 	}
 	
+	@Override
+	/**
+	 * Increases the monster's min and max damage
+	 * @param plusAmount is the amount that the monster's strength increases by
+	 */
+	public void getStrong(int plusAmount) {
+		this.setDmg(this.minDmg+plusAmount, this.maxDmg+plusAmount);
+	}
+	
+	/**
+	 * Sets the monster's min and max damage
+	 * @param minDmg is the minimum amount of damage that the monster can do
+	 * @param maxDmg is the maximum amount of damage that the monster can do
+	 */
+	public void setDmg(int minDmg, int maxDmg) {
+		this.maxDmg = Math.max(maxDmg, minDmg);
+		this.minDmg = (int) Math.max(this.maxDmg*0.75, minDmg); //ensures min dmg is always relatively close to max dmg no matter what
+	}
+
 	public String toString() {
 		return (getIsAlive() ? "The "+this.type+" has "+this.health+" health left" :
 			"The "+this.type+" is dead");

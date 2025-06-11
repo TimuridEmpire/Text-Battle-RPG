@@ -142,6 +142,10 @@ public class Battle {
 			for (int i = 0; i < 40; i++) { System.out.print("*"); }
 			System.out.println("\n");
 			
+			//applies the player's and monster's effects at the start of the round
+			player.updateEffects();
+			monster.updateEffects();
+			
 			playerTurn(player, monster, scan);
 			if (monster.getHealth() <= 0) { //breaking the loop if the player's attack killed the monster
 				monster.setIsAlive(false);
@@ -155,6 +159,7 @@ public class Battle {
 			if (player instanceof Mage) {
 				((Mage) player).restoreMana(((Mage) player).getMana());
 			}
+			
 			System.out.println();
 			round++;
 		}

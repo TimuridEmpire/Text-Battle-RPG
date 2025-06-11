@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.lang.Math;
 
-public class Player {
+public class Player extends Entity {
 	
 	private String name;
 	private int health;
@@ -55,10 +55,10 @@ public class Player {
 	public void defaultInventory() {
 		inventory = new ArrayList<Item>();
 		inventory.add(new Item("Health Potion",1));
+		inventory.add(new Item("Health Potion",1));
 		inventory.add(new Item("Health Potion",2));
 		inventory.add(new Item("Strength Potion",1));
 		inventory.add(new Item("Strength Potion",2));
-		inventory.add(new Item("Mana Potion",1));
 	}
 	
 	public String getName() {
@@ -184,6 +184,7 @@ public class Player {
 		return damage;
 	}
 	
+	@Override
 	/**
 	 * Has the player take damage and returns the damage
 	 * @param damage is the original damage that the player receives
@@ -201,6 +202,9 @@ public class Player {
 	    double maxReduction = 50.0;
 	    double reduction = Math.min(defenseBonus, maxReduction);
 	    
+	    if (reduction == maxReduction) {
+	    	System.out.println("Max reduction of 50% was reached");
+	    }
 	    if (Arrays.stream(this.wearables).anyMatch(Objects::nonNull)) {
 	    	System.out.println("Damage was reduced by "+reduction+" percent");
 	    }	   
@@ -212,16 +216,16 @@ public class Player {
 	    return finalDamage;
 	}
 	
+	@Override
 	/**
 	 * Heals the damage of the player by a set amount
 	 * @param healAmount is the amount that the player is healed by
 	 */
 	public void healDamage(int healAmount) {
-		this.health = (this.health+healAmount > this.maxHealth) ?
-				this.maxHealth : 
-					this.health+healAmount;
+		this.health = Math.min(this.maxHealth, Math.max(0,this.health+healAmount));
 	}
 	
+	@Override
 	/**
 	 * Increases the player's min and max damage
 	 * @param plusAmount is the amount that the player's strength increases by

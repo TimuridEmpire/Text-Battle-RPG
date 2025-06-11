@@ -25,8 +25,7 @@ public class Witch extends Monster {
 			{ "Domain Expansion: Malevolent Shrine", "Hollow Purple", "Cursed Divine Punishment", "Reality Shatter",
 					"Cosmic Imposion" } }; // level 11
 
-	private Map<String, Consumer<Player>> effectActions; // creates a hashmap with a String key and a consumer value of
-															// the player object
+	private Map<String, Consumer<Player>> effectActions; // creates a hashmap with a String key and a consumer value of the player object
 
 	public Witch(String type) {
 		super(type);
