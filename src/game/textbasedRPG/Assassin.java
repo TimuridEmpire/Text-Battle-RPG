@@ -42,7 +42,7 @@ public class Assassin extends Rogue {
 					+this.getMinDmg()); 
 			//multiplies damage by random variable (like rogue superclass crit but better)
 			damage *= Math.random()*2+2.5;
-			damage = (int) damage;
+			damage = wearableBonusApplier("attack", (int) damage);
 			damage = monster.takeDamage(damage);
 			if (monster.getIsAlive()) {
 				System.out.println("An assassination was attempted\nThe player did a lot of damage"); //lets the user know of the assassination attempt

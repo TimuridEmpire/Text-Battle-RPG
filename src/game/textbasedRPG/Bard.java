@@ -42,7 +42,7 @@ public class Bard extends Mage {
 	public int attack(Monster monster) {
 		int damage = super.attack(monster);
 		if (Math.random() < charmChance) {
-			damage *= 1.25; // 25% more damage
+			monster.takeDamage((int) (damage*0.25)); // 25% more damage (calls take damage again with 25% damage -> 100% damage + 25% damage = 125% damage)
 			System.out.println("The charm made the " + monster.getType() + " lower their guard");
 			System.out.println("The player did more damage as a result");
 		}

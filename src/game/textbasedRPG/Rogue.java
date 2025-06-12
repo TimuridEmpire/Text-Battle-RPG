@@ -34,6 +34,7 @@ public class Rogue extends Player {
 					+this.getMinDmg()); 
 			//doubles the damage
 			damage *= 2;
+			damage = wearableBonusApplier("attack", (int) damage);
 			damage = monster.takeDamage(damage);
 			System.out.println("A crit attack was done"); //lets the user know of the crit
 			return (int) (damage);

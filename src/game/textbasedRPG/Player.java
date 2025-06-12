@@ -156,7 +156,6 @@ public class Player extends Entity {
         }
         
 	}
-
 	
 	/**
 	 * Deals damage to the monster
@@ -165,21 +164,7 @@ public class Player extends Entity {
 	 */
 	public int attack(Monster monster) {
 		int damage = (int) (Math.random()*(this.maxDmg-this.minDmg+1)+this.minDmg);
-		double attackBonus = 0.0;
-		for (int i = 0; i < this.wearables.length; i++) {
-			if (this.getWearable(i) != null) {
-				attackBonus += this.getWearable(i).getAttackBonus();
-		    }
-		}
-		
-		//Cap attack bonus at a certain number to avoid doing too much damage
-	    double attackCap = 100.0;
-	    double finalAttackBonus = Math.min(attackCap, attackBonus);
-		
-		if (Arrays.stream(this.wearables).anyMatch(Objects::nonNull)) {
-			System.out.println("Attack was increased by "+finalAttackBonus+" percent");
-		}
-		damage = (int) (damage * (1.0 + finalAttackBonus / 100.0));
+		damage = wearableBonusApplier("attack", damage);
 		damage = monster.takeDamage(damage);
 		return damage;
 	}
@@ -191,29 +176,46 @@ public class Player extends Entity {
 	 * @returns the damage that the player receives
 	 */
 	public int takeDamage(int damage) {
-		double defenseBonus = 0.0;
-	    for (int i = 0; i < this.wearables.length; i++) {
-	        if (this.getWearable(i) != null) {
-	            defenseBonus += this.getWearable(i).getDefenseBonus();
-	        }
+	    damage = wearableBonusApplier("defense", damage);
+	    this.setHealth(this.health - damage);
+	    return damage;
+	}
+	
+	/**
+	 * Applies the bonuses that the player has
+	 * @param bonusType is the type of bonus (either attack or defense)
+	 * @param damage is the base damage before bonus (either giving or receiving)
+	 * @return the damage after bonuses are applied to it
+	 */
+	public int wearableBonusApplier(String bonusType, int damage) {
+		double bonus = 0.0;
+		for (int i = 0; i < this.wearables.length; i++) {
+			if (this.getWearable(i) != null) {
+				if (bonusType.equalsIgnoreCase("attack")) { //attack bonus
+					bonus += this.getWearable(i).getAttackBonus();
+				} else { //defense reduction
+					bonus += this.getWearable(i).getDefenseBonus();
+				}
+		    }
+		}
+		
+		//Cap bonus at a certain number to avoid adding too big of a bonus
+	    double cap = 50.0;
+	    bonus = Math.min(cap, bonus);
+		
+	    if (bonus == cap) {
+	    	System.out.println("Max "+bonusType+" bonus of 50% was reached");
 	    }
-	    
-	    //Cap defense reduction at a certain number to avoid taking too little damage
-	    double maxReduction = 50.0;
-	    double reduction = Math.min(defenseBonus, maxReduction);
-	    
-	    if (reduction == maxReduction) {
-	    	System.out.println("Max reduction of 50% was reached");
-	    }
-	    if (Arrays.stream(this.wearables).anyMatch(Objects::nonNull)) {
-	    	System.out.println("Damage was reduced by "+reduction+" percent");
-	    }	   
-	    
-	    int finalDamage = (int) (damage * (1.0 - reduction / 100.0));
-	    finalDamage = Math.max(finalDamage, 1); // Always take at least 1 damage
-	    
-	    this.setHealth(this.health - finalDamage);
-	    return finalDamage;
+		if (Arrays.stream(this.wearables).anyMatch(Objects::nonNull)) {
+			System.out.println(bonusType.substring(0,1).toUpperCase()+bonusType.substring(1)+" was increased by "+bonus+" percent");
+		}
+		if (bonusType.equalsIgnoreCase("attack")) { 
+			damage = (int) (damage * (1.0 + bonus / 100.0)); //attack bonus
+		} else {
+			damage = (int) (damage * (1.0 - bonus / 100.0)); //defense reduction
+		    damage = Math.max(damage, 1); // Always take at least 1 damage
+		}
+		return damage;
 	}
 	
 	@Override
