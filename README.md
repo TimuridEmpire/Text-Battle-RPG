@@ -17,10 +17,18 @@ Text-Battle-RPG/
 │   └── game/
 │       └── textbasedRPG/
 │           ├── GameRunner.java
-│           ├── Player.java
-│           ├── Monster.java
-│           ├── [other class files...]
-├── bin/                 # (Ignored in Git)
+│           ├── Battle.java
+│           ├── Item.java
+│           ├── entityclasses/
+│           │   ├── Entity.java
+│           │   ├── playerclasses/
+│           │   │   ├── Player.java
+│           │   │   └── [other class files...]
+│           │   └── monsterclasses/
+│           │       ├── Monster.java
+│           │       └── [other class files...]
+│           └── [other class files...]
+├── bin/ # (Ignored in Git)
 ├── module-info.java
 ├── .gitignore
 └── README.md
