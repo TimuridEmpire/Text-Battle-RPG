@@ -30,7 +30,8 @@ public abstract class Entity {
      * @param duration is how many turns the effect lasts for
      */
     public void applyEffect(String effectName, int duration) {
-        activeEffects.put(effectName, duration);
+        activeEffects.put(effectName.substring(0,1).toUpperCase()+effectName.substring(1).toLowerCase(),
+        		duration);
         System.out.println("The " + effectName + " effect was activated for " + duration + " turns");
     }
     
@@ -48,9 +49,12 @@ public abstract class Entity {
                 activeEffects.remove(effect);
                 System.out.println(effect + " has worn off");
             } else {
+            	System.out.println(effect+" has "+remaining+" turns remaining");
                 activeEffects.put(effect, remaining);
             }
         }
+        System.out.println(this.health+" health points are left");
+        System.out.println("Min dmg: "+this.minDmg+", Max dmg: "+this.maxDmg);
     }
     
     public int getHealth() {
@@ -63,6 +67,10 @@ public abstract class Entity {
 	
 	public int getMaxDmg() {
 		return this.maxDmg;
+	}
+	
+	public EffectHandler getEventHandler() {
+		return this.effectHandler;
 	}
 
     //Implemented differently in player and monster

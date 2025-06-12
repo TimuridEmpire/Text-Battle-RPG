@@ -103,7 +103,7 @@ public class Player extends Entity {
 	}
 	
 	public void setHealth(int health) {
-		this.health = (health <= this.maxHealth) ? health : this.maxHealth;
+		this.health = (health <= this.maxHealth) ? ((health > 0) ? health : 0) : this.maxHealth;
 	}
 	
 	public void setMaxHealth(int maxHealth) {
@@ -111,7 +111,8 @@ public class Player extends Entity {
 	}
 	
 	public void setDmg(int minDmg, int maxDmg) {
-		this.maxDmg = Math.max(maxDmg, minDmg);
+		maxDmg = Math.max(maxDmg, minDmg); //max damage is maximum of min and max damage passed as parameters regardless of order
+		this.maxDmg = Math.max(maxDmg, 10); //setting max damage to at least be 10
 		this.minDmg = (int) Math.max(this.maxDmg*0.75, minDmg); //ensures min dmg is always relatively close to max dmg no matter what
 	}
 	
@@ -206,7 +207,11 @@ public class Player extends Entity {
 	    	System.out.println("Max "+bonusType+" bonus of 50% was reached");
 	    }
 		if (Arrays.stream(this.wearables).anyMatch(Objects::nonNull)) {
-			System.out.println(bonusType.substring(0,1).toUpperCase()+bonusType.substring(1)+" was increased by "+bonus+" percent");
+			if (bonusType.equalsIgnoreCase("attack")) { 
+				System.out.println(bonusType.substring(0,1).toUpperCase()+bonusType.substring(1)+" was increased by "+bonus+" percent");
+			} else {
+				System.out.println(bonusType.substring(0,1).toUpperCase()+bonusType.substring(1)+" was reduced by "+bonus+" percent");
+			}
 		}
 		if (bonusType.equalsIgnoreCase("attack")) { 
 			damage = (int) (damage * (1.0 + bonus / 100.0)); //attack bonus

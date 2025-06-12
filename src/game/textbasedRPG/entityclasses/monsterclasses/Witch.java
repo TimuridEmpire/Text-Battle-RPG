@@ -24,7 +24,7 @@ public class Witch extends Monster {
 			{ "Kamehameha", "Soul Drain", "Demonic Judgement", "Meteor Shower", "Apocalyptic Fire" }, // level 9
 			{ "Hell's Curse", "Super Nova", "Shadow Retribution", "Idle Transfiguration", "Oblivion Ray", "Calculus" }, // level
 																														// 10
-			{ "Domain Expansion: Malevolent Shrine", "Hollow Purple", "Cursed Divine Punishment", "Reality Shatter",
+			{ "Domain Expansion: Malevolent Shrine", "Cursed Divine Punishment", "Reality Shatter",
 					"Cosmic Imposion" } }; // level 11
 
 	private Map<String, Consumer<Player>> effectActions; // creates a hashmap with a String key and a consumer value of the player object
@@ -57,24 +57,34 @@ public class Witch extends Monster {
 		effectActions.put("Poison Breath", (Player player) -> {
 			attack(player, 1, 5);
 			debuffDamage(player, ((int) Math.random() * 4) + 2);
+			player.applyEffect("Poison", 1);
 		});
 		effectActions.put("Searing Ash", (Player player) -> attack(player, 1.1, 5));
 
 		// Level 3 effects
 		effectActions.put("Acid Splash", (Player player) -> attack(player, 1.1, 10));
-		effectActions.put("Frost Touch", (Player player) -> attack(player, 1.1, 5));
+		effectActions.put("Frost Touch", (Player player) -> {
+			attack(player, 1.1, 5);
+			player.applyEffect("Frostbite", 1);
+		});
 		effectActions.put("Thunder Clap", (Player player) -> attack(player, 1, 5));
 		effectActions.put("Poisonous Cloud", (Player player) -> {
 			attack(player, 1.1, 5);
 			debuffDamage(player, ((int) Math.random() * 2) + 4);
+			player.applyEffect("Poison", 1);
 		});
 
 		// Level 4 effects
-		effectActions.put("Acidic Flame Breath", (Player player) -> attack(player, 1.2, 10));
+		effectActions.put("Acidic Flame Breath", (Player player) -> { 
+			attack(player, 1.2, 10);
+			player.applyEffect("Poison", 1);
+			player.applyEffect("Burn", 1);
+		});
 		effectActions.put("Flame Spears", (Player player) -> attack(player, 1.2, 10));
 		effectActions.put("Poison Arrows", (Player player) -> {
 			attack(player, 1.1, 10);
 			debuffDamage(player, ((int) Math.random() * 3) + 4);
+			player.applyEffect("Poison", 1);
 		});
 		effectActions.put("Magnetic Tightening",
 				(Player player) -> debuffDamage(player, ((int) Math.random() * 4) + 10));
@@ -92,6 +102,7 @@ public class Witch extends Monster {
 		effectActions.put("Venomous Strike", (Player player) -> {
 			attack(player, 1.2, 15);
 			debuffDamage(player, ((int) Math.random() * 2) + 4);
+			player.applyEffect("Poison", 2);
 		});
 		effectActions.put("Stone Pillars", (Player player) -> {
 			attack(player, 1.1, 20);
@@ -109,16 +120,22 @@ public class Witch extends Monster {
 		effectActions.put("Decay", (Player player) -> {
 			attack(player, 1.2, 10);
 			debuffMaxHealth(player, ((int) Math.random() * 5) + 22);
+			player.applyEffect("Weaken", 1);
+			player.applyEffect("Fatigue", 1);
 		});
 		effectActions.put("Curse of Weakness", (Player player) -> {
 			attack(player, 1.1, 10);
 			debuffMaxHealth(player, ((int) Math.random() * 6) + 8);
 			debuffDamage(player, ((int) Math.random() * 6) + 8);
+			player.applyEffect("Weaken", 2);
 		});
 		effectActions.put("Radiation Burst", (Player player) -> attack(player, 1.2, 20));
 
 		// Level 7 effects
-		effectActions.put("Corrupt", (Player player) -> debuffDamage(player, 25));
+		effectActions.put("Corrupt", (Player player) -> { 
+			debuffDamage(player, 25);
+			player.applyEffect("Fatigue", 2);
+		});
 		effectActions.put("Lightning Strike", (Player player) -> attack(player, 1.1, 25));
 		effectActions.put("Spirit Spear", (Player player) -> attack(player, 1.2, 20));
 		effectActions.put("Hadouken", (Player player) -> attack(player, 1.2, 25));
@@ -126,22 +143,26 @@ public class Witch extends Monster {
 		effectActions.put("Mind Fragmentation", (Player player) -> {
 			attack(player, 1.1, 20);
 			debuffMaxHealth(player, ((int) Math.random() * 6) + 24);
+			player.applyEffect("Fatigue", 2);
 		});
 
 		// Level 8 effects
 		effectActions.put("Blood Drain", (Player player) -> {
 			attack(player, 1.1, 30);
 			debuffMaxHealth(player, ((int) Math.random() * 8) + 28);
+			player.applyEffect("Fatigue", 2);
 		});
 		effectActions.put("Wither", (Player player) -> {
 			attack(player, 1.1, 35);
 			debuffMaxHealth(player, ((int) Math.random() * 8) + 30);
 			debuffDamage(player, ((int) Math.random() * 5) + 8);
+			player.applyEffect("Weaken", 2);
 		});
 		effectActions.put("Burning Meteor", (Player player) -> attack(player, 1.2, 35));
 		effectActions.put("Unholy Wrath", (Player player) -> {
 			attack(player, 1.1, 40);
 			debuffDamage(player, ((int) Math.random() * 5) + 12);
+			player.applyEffect("Burn", 2);
 		});
 
 		// Level 9 effects
@@ -150,18 +171,24 @@ public class Witch extends Monster {
 			attack(player, 1.3, 35);
 			debuffMaxHealth(player, ((int) Math.random() * 6) + 27);
 			debuffDamage(player, ((int) Math.random() * 8) + 12);
+			player.applyEffect("Weaken", 3);
 		});
 		effectActions.put("Demonic Judgement", (Player player) -> {
 			attack(player, 1.1, 45);
 			debuffMaxHealth(player, ((int) Math.random() * 6) + 27);
+			player.applyEffect("Burn", 2);
 		});
 		effectActions.put("Meteor Shower", (Player player) -> attack(player, 1.1, 45));
-		effectActions.put("Apocalyptic Fire", (Player player) -> attack(player, 1.1, 50));
+		effectActions.put("Apocalyptic Fire", (Player player) -> { 
+			attack(player, 1.1, 50);
+			player.applyEffect("Burn", 3);
+		});
 
 		// Level 10 effects
 		effectActions.put("Hell's Curse", (Player player) -> {
 			attack(player, 1.2, 55);
 			debuffMaxHealth(player, ((int) Math.random() * 7) + 29);
+			player.applyEffect("Burn", 3);
 		});
 		effectActions.put("Super Nova", (Player player) -> attack(player, 1.2, 60));
 		effectActions.put("Shadow Retribution", (Player player) -> {
@@ -193,6 +220,7 @@ public class Witch extends Monster {
 			attack(player, 1.1, 20 + (player.getLevel() * 2));
 			debuffMaxHealth(player, ((int) Math.random() * 11) + 40);
 			debuffDamage(player, ((int) Math.random() * 6) + 17);
+			player.applyEffect("Fatigue", 3);
 		});
 
 		// Level 11 effects
@@ -209,10 +237,6 @@ public class Witch extends Monster {
 				System.out.println("You walk through Sukuna's domain without a scratch\n"
 						+ "You take no damage");
 			}
-		});
-		effectActions.put("Hollow Purple", (Player player) -> {
-			attack(player, Double.POSITIVE_INFINITY, Integer.MAX_VALUE);
-			System.out.println("\n" + player.getName() + " was erased from existence\n");
 		});
 		effectActions.put("Cursed Divine Punishment", (Player player) -> {
 			attack(player, 1.2, 80);
@@ -233,6 +257,9 @@ public class Witch extends Monster {
 	 */
 	public String applyEffect(Player player) {
 		String effectChosen = "";
+		if (this.getLevel() > 11) { //placeholder until there is an addition or fix of leveling system (trying not to call catch statement)
+			effectChosen = "No Effect";
+		}
 		try {
 			effectChosen = this.effects[this.getLevel()
 					- 1][(int) (Math.random() * this.effects[this.getLevel() - 1].length)]; // chooses the effect
@@ -245,7 +272,20 @@ public class Witch extends Monster {
 			System.out.println("The witch used " + effectChosen + " on " + player.getName());
 			effectActions.get(effectChosen).accept(player);
 		} else {
-			attack(player, 1.5, 20);
+			if (this.getLevel() >= 20) { //choosing effects depending on if the witch is at boss level or close to boss level
+				if (Math.random() < 0.3) {
+					attack(player, Double.POSITIVE_INFINITY, Integer.MAX_VALUE);
+					effectChosen = "Hollow Purple";
+					System.out.println("The witch used " + effectChosen + " on " + player.getName());
+					System.out.println("\n" + player.getName() + " was erased from existence\n");
+				} else {
+					effectChosen = "Divine Departure";
+					System.out.println("The witch used " + effectChosen + " on " + player.getName());
+					attack(player, 5, 300);
+				}
+			} else {
+				attack(player, 1.5, 20); //non-special attack
+			}		
 		}
 		return effectChosen;
 	}

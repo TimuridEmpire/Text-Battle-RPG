@@ -149,8 +149,19 @@ public class Battle {
 			System.out.println("\n");
 			
 			//applies the player's and monster's effects at the start of the round
-			player.updateEffects();
-			monster.updateEffects();
+			if (!player.getActiveEffects().isEmpty()) {
+				System.out.println("The player has the following effects:");
+				player.getActiveEffects();
+				System.out.println();
+				player.updateEffects();
+			}
+			if (!monster.getActiveEffects().isEmpty()) {
+				System.out.println("The "+monster.getType()+" has the following effects:");
+				monster.getActiveEffects();
+				System.out.println();
+				monster.updateEffects();
+			}
+			System.out.println();
 			
 			playerTurn(player, monster, scan);
 			if (monster.getHealth() <= 0) { //breaking the loop if the player's attack killed the monster

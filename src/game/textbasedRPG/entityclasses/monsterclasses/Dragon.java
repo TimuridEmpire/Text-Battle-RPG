@@ -10,7 +10,7 @@ public class Dragon extends Monster {
 	public Dragon(String type, int health, int minDmg, int maxDmg, int level) {
 		super(type, health, minDmg, (int) (maxDmg*(Math.random()+1)), level);
 		this.attackModifier = Math.min(Math.random()+1,2.0);
-		this.fireBreathingChance = Math.min(Math.random(),0.2);
+		this.fireBreathingChance = Math.min(Math.random(),0.5);
 	}
 	
 	public Dragon(String type, int health, int minDmg, int maxDmg, int level, double attackModifier) {
@@ -54,11 +54,12 @@ public class Dragon extends Monster {
 		int damage = (int) (Math.random()*(this.getMaxDmg()-this.getMinDmg()+1)+this.getMinDmg());
 		damage = (int) (damage*(Math.max((double) this.getHealth()/this.getOriginalHealth(),0.5)));
 		
-		if (Math.random() > this.fireBreathingChance) {
+		if (Math.random() < this.fireBreathingChance) {
 			int fireDamage = damage/2;
 			player.takeDamage(fireDamage); //burns the player with fire effect
 			System.out.println("The "+this.getType()+" used fire breathing to burn "+player.getName());
 			System.out.println("The fire damage caused "+fireDamage+" damage");
+			player.applyEffect("Burn", 2);
 		}
 		
 		damage = (int) (player.takeDamage((int) (damage*this.attackModifier))); //gives the damage with the modifier multiplied to it
