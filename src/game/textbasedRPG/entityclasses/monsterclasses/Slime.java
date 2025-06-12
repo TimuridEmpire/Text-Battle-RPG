@@ -1,6 +1,8 @@
-package game.textbasedRPG;
+package game.textbasedRPG.entityclasses.monsterclasses;
 
 import java.lang.Math;
+
+import game.textbasedRPG.entityclasses.playerclasses.Player;
 
 public class Slime extends Monster {
 	

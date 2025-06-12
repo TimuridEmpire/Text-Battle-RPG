@@ -1,6 +1,9 @@
-package game.textbasedRPG;
+package game.textbasedRPG.entityclasses.playerclasses;
 
 import java.util.ArrayList;
+
+import game.textbasedRPG.Item;
+import game.textbasedRPG.entityclasses.monsterclasses.Monster;
 
 public class Bard extends Mage {
 

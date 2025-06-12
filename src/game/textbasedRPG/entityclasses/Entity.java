@@ -1,12 +1,24 @@
-package game.textbasedRPG;
+package game.textbasedRPG.entityclasses;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import game.textbasedRPG.EffectHandler;
 
 public abstract class Entity {
   
     protected Map<String, Integer> activeEffects = new HashMap<>(); //effect name -> duration
 	protected EffectHandler effectHandler = EffectHandler.getInstance();
+	
+	protected int health;
+	protected int minDmg;
+	protected int maxDmg;
+	
+	public Entity(int health, int minDmg, int maxDmg) {
+		this.health = health;
+		this.minDmg = minDmg;
+		this.maxDmg = maxDmg;
+	}
 	
     public Map<String, Integer> getActiveEffects() {
         return activeEffects;
@@ -27,9 +39,10 @@ public abstract class Entity {
      */
     public void updateEffects() {
         for (String effect : new HashMap<>(activeEffects).keySet()) {
-        	if (effectHandler.isValidEffect(effect)) {
+        	if (effectHandler.isValidEffect(effect)) { //only gets the effects for the effects in active effects that are in the effects pool
                 effectHandler.getEffect(effect).accept(this);
             }
+        	//updating remaining duration in turns for the effect
             int remaining = activeEffects.get(effect) - 1;
             if (remaining <= 0) {
                 activeEffects.remove(effect);
@@ -39,6 +52,18 @@ public abstract class Entity {
             }
         }
     }
+    
+    public int getHealth() {
+		return this.health;
+	}
+	
+	public int getMinDmg() {
+		return this.minDmg;
+	}
+	
+	public int getMaxDmg() {
+		return this.maxDmg;
+	}
 
     //Implemented differently in player and monster
     public abstract int takeDamage(int amount);

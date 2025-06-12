@@ -1,31 +1,28 @@
-package game.textbasedRPG;
+package game.textbasedRPG.entityclasses.monsterclasses;
 
 import java.lang.Math;
+
+import game.textbasedRPG.entityclasses.Entity;
+import game.textbasedRPG.entityclasses.playerclasses.Player;
 
 public class Monster extends Entity {
 	
 	private String type;
-	private int health;
 	private int originalHealth;
-	private int minDmg;
-	private int maxDmg;
 	private int level;
 	private boolean isAlive;
 	
 	public Monster(String type) {
+		super(10, 1, 10);
 		this.type = type;
-		this.health = 10;
-		this.minDmg = 1;
-		this.maxDmg = 10;
 		this.level = 1;
 		this.isAlive = true;
 	}
 	
 	public Monster(String type, int health, int minDmg, int maxDmg, int level) {
+		super((health > 0) ? health : 10, (minDmg > 0) ? minDmg : 1, maxDmg < minDmg ? minDmg+((int) Math.random()*10+1) : maxDmg);
 		this.type = type;
-		this.health = this.originalHealth = (health <= 0 ? 100 : health);
-		this.minDmg = minDmg < 0 ? 1 : minDmg;
-		this.maxDmg = maxDmg < minDmg ? minDmg+((int) Math.random()*10+1) : maxDmg;
+		this.originalHealth = this.health;
 		this.level = level < 1 ? 1 : level;
 		this.isAlive = true;
 	}

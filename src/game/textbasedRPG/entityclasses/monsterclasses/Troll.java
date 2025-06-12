@@ -1,4 +1,4 @@
-package game.textbasedRPG;
+package game.textbasedRPG.entityclasses.monsterclasses;
 
 import java.lang.Math;
 

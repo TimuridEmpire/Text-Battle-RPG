@@ -1,7 +1,9 @@
-package game.textbasedRPG;
+package game.textbasedRPG.entityclasses.playerclasses;
 
 import java.lang.Math;
 import java.util.ArrayList;
+
+import game.textbasedRPG.entityclasses.monsterclasses.Monster;
 
 public class Rogue extends Player {
 	

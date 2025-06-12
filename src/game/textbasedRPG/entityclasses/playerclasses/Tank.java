@@ -1,6 +1,8 @@
-package game.textbasedRPG;
+package game.textbasedRPG.entityclasses.playerclasses;
 
 import java.util.ArrayList;
+
+import game.textbasedRPG.Item;
 
 public class Tank extends Warrior {
 	

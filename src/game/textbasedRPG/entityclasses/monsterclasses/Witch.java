@@ -1,9 +1,11 @@
-package game.textbasedRPG;
+package game.textbasedRPG.entityclasses.monsterclasses;
 
 import java.lang.Math;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import game.textbasedRPG.entityclasses.playerclasses.Player;
 
 public class Witch extends Monster {
 

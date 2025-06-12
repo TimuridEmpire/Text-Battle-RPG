@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import game.textbasedRPG.entityclasses.Entity;
+
 public class EffectHandler {
 	
 	private static final EffectHandler instance = new EffectHandler();
@@ -14,9 +16,9 @@ public class EffectHandler {
     public EffectHandler() {
     	totalEffects = new HashMap<>();
     	
-        totalEffects.put("Burn", e -> e.takeDamage(5));
-        totalEffects.put("Regeneration", e -> e.healDamage(4));
-        totalEffects.put("Weaken", e -> e.getStrong(-5));
+        totalEffects.put("Burn", e -> e.takeDamage((int) (e.getHealth()*0.2)));
+        totalEffects.put("Regeneration", e -> e.healDamage((int) (e.getHealth()*0.2)));
+        totalEffects.put("Weaken", e -> e.getStrong(-1 * (int) (e.getMinDmg()*0.1)));
         //add more effects
     }
 

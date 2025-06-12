@@ -3,6 +3,11 @@ package game.textbasedRPG;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import game.textbasedRPG.entityclasses.playerclasses.Mage;
+import game.textbasedRPG.entityclasses.playerclasses.Player;
+import game.textbasedRPG.entityclasses.playerclasses.Rogue;
+import game.textbasedRPG.entityclasses.playerclasses.Warrior;
+
 public class GameRunner {
 	
 	private static String[] gameModes = {"normal","witch"};

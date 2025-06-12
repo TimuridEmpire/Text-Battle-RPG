@@ -1,4 +1,6 @@
-package game.textbasedRPG;
+package game.textbasedRPG.entityclasses.monsterclasses;
+
+import game.textbasedRPG.entityclasses.playerclasses.Player;
 
 public class Demon extends Monster {
 	

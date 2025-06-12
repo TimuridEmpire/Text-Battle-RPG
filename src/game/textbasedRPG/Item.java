@@ -1,5 +1,8 @@
 package game.textbasedRPG;
 
+import game.textbasedRPG.entityclasses.playerclasses.Mage;
+import game.textbasedRPG.entityclasses.playerclasses.Player;
+
 public class Item {
 
 	private String type;

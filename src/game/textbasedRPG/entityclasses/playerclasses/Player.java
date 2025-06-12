@@ -1,46 +1,46 @@
-package game.textbasedRPG;
+package game.textbasedRPG.entityclasses.playerclasses;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+
+import game.textbasedRPG.Item;
+import game.textbasedRPG.Wearable;
+import game.textbasedRPG.entityclasses.Entity;
+import game.textbasedRPG.entityclasses.monsterclasses.Monster;
+
 import java.lang.Math;
 
 public class Player extends Entity {
 	
 	private String name;
-	private int health;
 	private ArrayList<Item> inventory;
 	private Wearable[] wearables;
 	private int maxHealth;
-	private int minDmg;
-	private int maxDmg;
 	private int level = 1;
 	private boolean isAlive = true;
 	private boolean canUpgrade = false;
 	
 	public Player(String name) {
+		super(100, 1, 10);
 		this.name = name;
-		this.health = this.maxHealth = 100;
-		this.minDmg = 1;
-		this.maxDmg = 10;
+		this.maxHealth = 100;
 		defaultInventory();
 		setWearables(new Wearable[5]);
 	}
 	
 	public Player(String name, int health, int minDmg, int maxDmg) {
+		super((health > 0) ? health : 100, (minDmg > 0) ? minDmg : 1, (maxDmg > minDmg) ? maxDmg : minDmg+10);
+		this.setDmg(minDmg, maxDmg);
 		this.name = name;
-		this.health = (health > 0) ? health : 100;
 		this.maxHealth = this.health;
-		this.minDmg = (minDmg > 0) ? minDmg : 1;
-		this.maxDmg = (maxDmg > this.minDmg) ? maxDmg : this.minDmg+10;
 		defaultInventory();
 		setWearables(new Wearable[5]);
 	}
 	
 	public Player(String name, ArrayList<Item> inventory) {
-		this.health = this.maxHealth = 100;
-		this.minDmg = 1;
-		this.maxDmg = 10;
+		super(100, 1, 10);
+		this.maxHealth = 100;
 		if (inventory.equals(null)) {
 			defaultInventory();
 		} else {
@@ -138,13 +138,12 @@ public class Player extends Entity {
 	public void levelUp(int monsterLevel) {
 		//damage and hp scaling (damage scaling slows done after 10 levels)
         double dmgScale = (this.level == 1) ? 1.1 : (this.level > 10) ? 1+Math.log10(this.level)/3.5 : 1+Math.log10(this.level)/3.0;
-        double hpScale = (this.level == 1) ? 1.1 : 1+Math.log10(this.level)/2.5;
+        double hpScale = (this.level == 1) ? 1.1 : (this.level <= 10) ? 1+Math.log10(this.level)/2.75 : 1+Math.log10(this.level)/3.25;
         
         this.setDmg((int) (minDmg*dmgScale), (int) (maxDmg*dmgScale));
         this.setMaxHealth((int) (this.getMaxHealth()*hpScale));
         
-        int totalHealth = (int) ((this.health*hpScale) + (monsterLevel*5));
-        int healPoints = totalHealth - this.health;
+        int healPoints = (int) ((this.health*hpScale) + (monsterLevel*2)) - this.health;
         this.healDamage(healPoints);
         System.out.println("Health has been increased by "+healPoints+" points");
         System.out.println("Health, Max Health, Min Damage, and Max Damage have all increased");

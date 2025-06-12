@@ -1,6 +1,12 @@
 package game.textbasedRPG;
 
 import java.util.Scanner;
+
+import game.textbasedRPG.entityclasses.monsterclasses.Monster;
+import game.textbasedRPG.entityclasses.monsterclasses.Witch;
+import game.textbasedRPG.entityclasses.playerclasses.Mage;
+import game.textbasedRPG.entityclasses.playerclasses.Player;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -38,7 +44,7 @@ public class Battle {
 		String[][] monsterTypes = {{"Zombie","Slime","Witch","Giant","Ghost"},
 				{"Dragon", "Troll","Demon"}};
 		Random randomChoice = new Random();
-		String packageName = "game.textbasedRPG.";
+		String packageName = "game.textbasedRPG.entityclasses.monsterclasses.";
 		String randomMonster = packageName;
 		
 		 if (mode.equalsIgnoreCase("witch")) { //fun and chaotic mode
