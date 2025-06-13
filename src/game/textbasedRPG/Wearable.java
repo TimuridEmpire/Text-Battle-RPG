@@ -9,6 +9,7 @@ public class Wearable {
     private double level;
     private double attackBonus;
     private double defenseBonus;
+    private String protectionFrom;
     
     public Wearable() {
         this.name = "Unknown Wearable";
@@ -16,12 +17,14 @@ public class Wearable {
         this.level = 1;
         this.attackBonus = 0.0;
         this.defenseBonus = 0.0;
+        this.protectionFrom = "";
     }
     
     public Wearable(String name, String type) {
         this.name = name;
         this.type = type.toLowerCase();
         this.level = 1;
+        this.protectionFrom = "";
         setBonuses();
     }
     
@@ -29,6 +32,7 @@ public class Wearable {
         this.name = name;
         this.type = type.toLowerCase();
         this.level = level;
+        this.protectionFrom = "";
         setBonuses();
     }
     
@@ -56,7 +60,7 @@ public class Wearable {
      * Sets the percentage bonuses based on the wearable type and level
      */
     private void setBonuses() {
-        double baseBonus = (this.level/15.0)*100.0; // Base percentage (max 66% and min 6% for level 10 and level 1 respectively)
+        double baseBonus = (this.level/40.0)*100.0; // Base percentage (max 25% and min 2.5% for level 10 and level 1 respectively)
         double variation = Math.random() * 4 + 1; // 1-5% random variation
         baseBonus = Math.round(baseBonus);
         variation = Math.round(variation);
@@ -70,12 +74,18 @@ public class Wearable {
 
         } else if (this.type.equals("amulet")) {
             this.attackBonus = baseBonus + variation;
-            this.defenseBonus = baseBonus + variation; //change to amulet protecting against certain effects once effects are made
+            this.defenseBonus = baseBonus + variation;
+            this.protectionFrom = "burn"; //add a system to randomly choose effects that amulet protects from and implement the choice
+            //most likely move wearable array in player up to entity
         }
     }
 
 	public String toString() {
-		return this.name + " (" + this.type + "): level " + this.level + " (attack + " + this.attackBonus
-				+ ", defense + " + this.defenseBonus + ")";
+		if (this.type.equals("amulet")) {
+			return this.name + " (" + this.type + "): level " + this.level + " (attack + " + this.attackBonus 
+					+ ", defense + " + this.defenseBonus + ") -> protection from: "+this.protectionFrom;
+		}
+		return this.name + " (" + this.type + "): level " + this.level + " (attack + " + this.attackBonus 
+		+ ", defense + " + this.defenseBonus + ")";
 	}
 }

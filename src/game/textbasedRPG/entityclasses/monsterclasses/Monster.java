@@ -91,7 +91,7 @@ public class Monster extends Entity {
 	 */
 	public int attack(Player player) {
 		int damage = (int) (Math.random()*(this.maxDmg-this.minDmg+1)+this.minDmg);
-		damage = (int) (damage*(Math.max((double) this.health/this.originalHealth,0.2)));
+		damage = (int) (damage*(Math.max((double) Math.sqrt(this.health/this.originalHealth),0.4)));
 		damage = player.takeDamage(damage);
 		return damage;
 	}

@@ -57,6 +57,10 @@ public class Mage extends Player {
 	protected int manaAttack(int manaCost, Monster monster) {
 		if (this.mana >= manaCost) {
 			this.setMana(this.mana - manaCost);
+			String[] effectsPossible = {"burn","poison","weaken"};
+			String attackType = effectsPossible[(int) (Math.random()*effectsPossible.length)];
+			monster.applyEffect(attackType, (int) (Math.random()*3)+1); //apply random effect for random amount of time
+			System.out.println(this.getName()+" used "+attackType+" on the "+monster.getType());
 			System.out.println(this.getName() + " consumed " + manaCost + " mana");
 			System.out.println(this.getName() + " has " + this.mana + " mana left");
 			return super.attack(monster);

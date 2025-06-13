@@ -47,7 +47,7 @@ public class Battle {
 		String packageName = "game.textbasedRPG.entityclasses.monsterclasses.";
 		String randomMonster = packageName;
 		
-		 if (mode.equalsIgnoreCase("witch")) { //fun and chaotic mode
+		 if (mode.toLowerCase().contains("witch")) { //fun and chaotic mode
 				randomMonster = packageName+"Witch";
 		} else { //normal mode
 			ArrayList<String> allMonsters = new ArrayList<>();
@@ -199,6 +199,7 @@ public class Battle {
 				 if (Math.random() < 0.2 && Arrays.stream(player.getWearables()).anyMatch(Objects::isNull)) {
 					 Wearable newWearable = getWearable(player);
 					 player.receiveWearable(newWearable); 
+					 System.out.println(player.getName()+" has recieved the "+newWearable.getName());
 				 }
 				
 				 //original player and monster levels before leveling up the player

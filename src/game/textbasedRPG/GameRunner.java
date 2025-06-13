@@ -10,7 +10,7 @@ import game.textbasedRPG.entityclasses.playerclasses.Warrior;
 
 public class GameRunner {
 	
-	private static String[] gameModes = {"normal","witch"};
+	private static String[] gameModes = {"normal","witch only"};
 	
 	public static void main(String args[]) 
 			throws Exception 
