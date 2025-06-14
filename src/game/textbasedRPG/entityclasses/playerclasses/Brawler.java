@@ -12,5 +12,5 @@ public class Brawler extends Warrior {
 				(int) (maxDmg*(Math.random()*0.5+1.5)));
 		this.setInventory(inventory);
 		this.setLevel(level);
-}
+	}
 }
