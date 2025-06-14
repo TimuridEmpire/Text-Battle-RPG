@@ -105,6 +105,10 @@ public class Player extends Entity {
 		this.health = (health <= this.maxHealth) ? ((health > 0) ? health : 0) : this.maxHealth;
 	}
 	
+	public void setIsAlive(boolean alive) {
+		this.isAlive = alive;
+	}
+	
 	public void setMaxHealth(int maxHealth) {
 		this.maxHealth = maxHealth > this.health ? maxHealth : this.health;
 	}

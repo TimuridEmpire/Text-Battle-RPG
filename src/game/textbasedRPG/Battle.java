@@ -171,11 +171,19 @@ public class Battle {
 			}
 			System.out.println();
 			
+			if (monster.getHealth() <= 0) { //breaking the loop if effects killed either player or monster
+				monster.setIsAlive(false);
+				break;
+			} else if (player.getHealth() <= 0) {
+				player.setIsAlive(false);
+				break;
+			}
 			playerTurn(player, monster, scan);
 			if (monster.getHealth() <= 0) { //breaking the loop if the player's attack killed the monster
 				monster.setIsAlive(false);
 				break;
-			} else if (!continuePlaying) {
+			}
+			else if (!continuePlaying) {
 				break;
 			}
 			monsterTurn(player, monster);
