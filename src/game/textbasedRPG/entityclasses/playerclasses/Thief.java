@@ -8,12 +8,14 @@ import game.textbasedRPG.entityclasses.monsterclasses.Monster;
 public class Thief extends Rogue {
 	
 	private double stealChance;
+	private double precisionChance;
 	
 	public Thief(String name, int health, int minDmg, int maxDmg, ArrayList<Item> inventory, int level) {
 		super(name, health, minDmg, maxDmg);
 		this.setInventory(inventory);
 		this.setLevel(level);
 		this.setStealChance((Math.random()*0.2+0.1)); //0.1-0.3
+		this.setPrecisionChance((Math.random()*0.2+0.1)); //0.1-0.3
 	}
 
 	public double getStealChance() {
@@ -24,12 +26,23 @@ public class Thief extends Rogue {
 		this.stealChance = stealChance;
 	}
 	
+	public double getPrecisionChance() {
+		return precisionChance;
+	}
+
+	public void setPrecisionChance(double precisionChance) {
+		this.precisionChance = precisionChance;
+	}
+	
 	/**
 	 * Deals damage to the monster with a chance of stealing life from the enemy
 	 * @param monster is the monster that the player attacks
 	 * @returns the amount of attack damage that was dealt
 	 */
 	public int attack(Monster monster) {
+		if (Math.random() < this.precisionChance) {
+			this.applyEffect("precision", 1);
+		}
 		if (Math.random() < this.stealChance) { //calculates the chance for life steal
 			int damage = super.attack(monster);
 			this.healDamage((int) (damage*0.1)); //heals player using damage that they did to enemy

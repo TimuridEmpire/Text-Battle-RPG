@@ -15,7 +15,6 @@ public class Player extends Entity {
 	
 	private String name;
 	private ArrayList<Item> inventory;
-	private Wearable[] wearables;
 	private int maxHealth;
 	private int level = 1;
 	private boolean isAlive = true;
@@ -207,11 +206,7 @@ public class Player extends Entity {
 	    	System.out.println("Max "+bonusType+" bonus of 50% was reached");
 	    }
 		if (Arrays.stream(this.wearables).anyMatch(Objects::nonNull)) {
-			if (bonusType.equalsIgnoreCase("attack")) { 
-				System.out.println(bonusType.substring(0,1).toUpperCase()+bonusType.substring(1)+" was increased by "+bonus+" percent");
-			} else {
-				System.out.println(bonusType.substring(0,1).toUpperCase()+bonusType.substring(1)+" was reduced by "+bonus+" percent");
-			}
+			System.out.println(bonusType.substring(0,1).toUpperCase()+bonusType.substring(1)+" was increased by "+bonus+" percent");
 		}
 		if (bonusType.equalsIgnoreCase("attack")) { 
 			damage = (int) (damage * (1.0 + bonus / 100.0)); //attack bonus

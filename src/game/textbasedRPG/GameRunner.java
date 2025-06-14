@@ -1,5 +1,6 @@
 package game.textbasedRPG;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -11,6 +12,7 @@ import game.textbasedRPG.entityclasses.playerclasses.Warrior;
 public class GameRunner {
 	
 	private static String[] gameModes = {"normal","witch only"};
+	private static int monstersDefeated;
 	
 	public static void main(String args[]) 
 			throws Exception 
@@ -46,7 +48,22 @@ public class GameRunner {
 		System.out.println("\n"+player.getName()+" has spotted several monsters in the distance");
 		System.out.println("Type 'quit' to stop playing the game\n");
 		
-		int monstersDefeated = 0;
+		player = gameplayLoop(player, scan, mode);
+		
+		ending(player, scan, mode);
+		
+		scan.close();
+	}
+	
+	/**
+	 * 
+	 * @param player is the player
+	 * @param scan is the scanner
+	 * @param mode is the game mode that the player chose
+	 * @return the number of monsters defeated
+	 * @throws a bunch of exceptions to make sure the method works
+	 */
+	public static Player gameplayLoop(Player player, Scanner scan, String mode) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		
 		while (player.getLevel() <= 20) {
 			//prints the demarcation for the monster battles
@@ -60,21 +77,32 @@ public class GameRunner {
 				System.out.println("\n");
 				break;
 			}
-            
-            if (player.getCanUpgrade()){
-                System.out.println("\nThe player is at the required level to upgrade their class\n");
-                player = player.upgradePlayer();
-                System.out.println("The player has been upgraded to a "+player.getClass().getSimpleName()+" and has been healed to full health");
-                player.setCanUpgrade(false);
-                System.out.println("The player loses all their wearable equipement\n");
-                System.out.println("The player has the following stats after their upgrade:");
-                System.out.println("Health: "+(player.getHealth() < 0 ? 0 : player.getHealth())+", Max Health: "+player.getMaxHealth()+
-                		", Minimum Damage: "+player.getMinDmg()+", Maximum Damage: "+player.getMaxDmg());
-                System.out.println("\n");
-            }
-            monstersDefeated++;
+	        
+	        if (player.getCanUpgrade()){
+	            System.out.println("\nThe player is at the required level to upgrade their class\n");
+	            player = player.upgradePlayer();
+	            System.out.println("The player has been upgraded to a "+player.getClass().getSimpleName()+" and has been healed to full health");
+	            player.setCanUpgrade(false);
+	            System.out.println("The player loses all their wearable equipement\n");
+	            System.out.println("The player has the following stats after their upgrade:");
+	            System.out.println("Health: "+(player.getHealth() < 0 ? 0 : player.getHealth())+", Max Health: "+player.getMaxHealth()+
+	            		", Minimum Damage: "+player.getMinDmg()+", Maximum Damage: "+player.getMaxDmg());
+	            System.out.println("\n");
+	        }
+	        monstersDefeated++;
 		}
-		
+		return player;
+	}
+	
+	/**
+	 * The ending for the game based on certain things
+	 * @param player is the player
+	 * @param monstersDefeated is the number of monsters defeated
+	 * @param scan is the scanner
+	 * @param mode is the game mode that the player chose
+	 * @throws a bunch of exceptions that it needs for it to work
+	 */
+	public static void ending(Player player, Scanner scan, String mode) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException, CustomException {
 		if (Battle.isContinuingToPlay()) {
 			if (player.getIsAlive()) {
 				System.out.println("The player ("+player.getName()+") has defeated "+monstersDefeated+" enemies");
@@ -82,7 +110,7 @@ public class GameRunner {
 				System.out.print("Now they face the biggest obstacle yet");
 				for (int i = 0; i < 3; i++) { System.out.print("."); Thread.sleep(1000); }
 				System.out.println("\nThe dungeon boss has appeared before you\n");
-				Battle.haveBattle(player, scan, mode);
+				Battle.haveBattle(player, scan, "boss");
 				if (player.getIsAlive()) {
 					System.out.println("Congratulations, you have defeated the dungeon boss and have thus been able to escape the dungeon");
 					System.out.println("Game over (good ending)");
@@ -130,7 +158,6 @@ public class GameRunner {
 			}
 			
 		}
-		scan.close();
 	}
 	
 	/**

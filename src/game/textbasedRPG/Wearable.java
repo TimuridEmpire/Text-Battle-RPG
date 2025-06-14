@@ -10,6 +10,7 @@ public class Wearable {
     private double attackBonus;
     private double defenseBonus;
     private String protectionFrom;
+    private String[] effectsAmuletProtectsFrom = {"poison", "burn", "weaken"};
     
     public Wearable() {
         this.name = "Unknown Wearable";
@@ -56,6 +57,18 @@ public class Wearable {
         return this.defenseBonus;
     }
     
+    public String getProtectionFrom() {
+    	return this.protectionFrom;
+    }
+    
+    public String[] getEffectsAmuletProtectsFrom() {
+		return effectsAmuletProtectsFrom;
+	}
+
+	public void setEffectsAmuletProtectsFrom(String[] effectsAmuletProtectsFrom) {
+		this.effectsAmuletProtectsFrom = effectsAmuletProtectsFrom;
+	}
+    
     /**
      * Sets the percentage bonuses based on the wearable type and level
      */
@@ -75,8 +88,8 @@ public class Wearable {
         } else if (this.type.equals("amulet")) {
             this.attackBonus = baseBonus + variation;
             this.defenseBonus = baseBonus + variation;
-            this.protectionFrom = "burn"; //add a system to randomly choose effects that amulet protects from and implement the choice
-            //most likely move wearable array in player up to entity
+            this.protectionFrom = this.effectsAmuletProtectsFrom[(int) (Math.random()*
+                                                                 this.effectsAmuletProtectsFrom.length)]; 
         }
     }
 

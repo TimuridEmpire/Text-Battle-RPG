@@ -1,9 +1,12 @@
 package game.textbasedRPG.entityclasses;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import game.textbasedRPG.EffectHandler;
+import game.textbasedRPG.Wearable;
 
 public abstract class Entity {
   
@@ -13,11 +16,13 @@ public abstract class Entity {
 	protected int health;
 	protected int minDmg;
 	protected int maxDmg;
+	protected Wearable[] wearables;
 	
 	public Entity(int health, int minDmg, int maxDmg) {
 		this.health = health;
 		this.minDmg = minDmg;
 		this.maxDmg = maxDmg;
+		this.wearables = new Wearable[5];
 	}
 	
     public Map<String, Integer> getActiveEffects() {
@@ -41,7 +46,13 @@ public abstract class Entity {
     public void updateEffects() {
         for (String effect : new HashMap<>(activeEffects).keySet()) {
         	if (effectHandler.isValidEffect(effect)) { //only gets the effects for the effects in active effects that are in the effects pool
-                effectHandler.getEffect(effect).accept(this);
+        		if (Arrays.stream(this.wearables).filter(Objects::nonNull) //if no wearable has protection from the effect
+        		        .noneMatch(w -> w.getProtectionFrom().equals(effect))) {
+        		    effectHandler.getEffect(effect).accept(this);
+        		} else {
+        			System.out.println("One or more of the amulets protected against the "+effect+" effect");
+        		}
+
             }
         	//updating remaining duration in turns for the effect
             int remaining = activeEffects.get(effect) - 1;

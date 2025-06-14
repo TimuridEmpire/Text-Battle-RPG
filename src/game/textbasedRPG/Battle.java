@@ -47,8 +47,11 @@ public class Battle {
 		String packageName = "game.textbasedRPG.entityclasses.monsterclasses.";
 		String randomMonster = packageName;
 		
-		 if (mode.toLowerCase().contains("witch")) { //fun and chaotic mode
-				randomMonster = packageName+"Witch";
+		if (mode.toLowerCase().equals("boss")) {
+			randomMonster = packageName+"Dragon";
+		}
+		else if (mode.toLowerCase().contains("witch")) { //fun and chaotic mode
+			randomMonster = packageName+"Witch";
 		} else { //normal mode
 			ArrayList<String> allMonsters = new ArrayList<>();
 		    int maxMonsterLevel = Math.min((int) player.getLevel()/10, monsterTypes.length-1);
@@ -102,6 +105,11 @@ public class Battle {
 		    double avgMonsterDmg = ((player.getHealth() + player.getMaxHealth()) / 2.0) * (Math.random()*10+20)/100.0;
 		    int monsterMinDmg = Math.max(1, (int) (avgMonsterDmg * 0.8));
 		    int monsterMaxDmg = Math.max(monsterMinDmg + 1, (int) (avgMonsterDmg * 1.1));
+		    
+		    if (mode.toLowerCase().equals("boss")) {
+		    	monsterMinDmg *= 2;
+		    	monsterMaxDmg *= 2;
+		    }
 
 	        //creates the monster with randomized (but balanced) stats
 	        return (Monster) constructor.newInstance(randomMonster.substring(packageName.length()), monsterHP, 
@@ -199,7 +207,7 @@ public class Battle {
 				 if (Math.random() < 0.2 && Arrays.stream(player.getWearables()).anyMatch(Objects::isNull)) {
 					 Wearable newWearable = getWearable(player);
 					 player.receiveWearable(newWearable); 
-					 System.out.println(player.getName()+" has recieved the "+newWearable.getName());
+					 System.out.println(player.getName()+" has recieved  "+newWearable);
 				 }
 				
 				 //original player and monster levels before leveling up the player
