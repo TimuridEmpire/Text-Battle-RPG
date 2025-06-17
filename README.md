@@ -42,4 +42,6 @@ Text-Battle-RPG/
 
 [@TimuridEmpire](https://github.com/TimuridEmpire), [@PotatoEater2009](https://github.com/PotatoEater2009)
 
+### License
+Your use of this code is governed by the Creative Commons Attribution-NonCommercial 4.0 International liscense. A copy of the legal code has been provided in the license section.
 
