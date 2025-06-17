@@ -38,10 +38,8 @@ Text-Battle-RPG/
 - Java 12+
 - Any Java-supporting IDE
 
-### License
+### Authors
 
-This project is licensed under the [CC BY-NC 4.0 License](https://creativecommons.org/licenses/by-nc/4.0/).
-
-You may use, modify, and run this code for personal and non-commercial purposes only. Attribution to the original author [@TimuridEmpire](https://github.com/TimuridEmpire) is required.
+[@TimuridEmpire](https://github.com/TimuridEmpire), [@PotatoEater2009](https://github.com/PotatoEater2009)
 
 
