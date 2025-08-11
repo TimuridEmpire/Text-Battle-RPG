@@ -16,7 +16,7 @@ public class Mage extends Player {
 
 	public Mage(String name, int health, int minDmg, int maxDmg) {
 		super(name, health, minDmg, maxDmg);
-		this.mana = this.maxMana = (int) (Math.random() * 50 + 25);
+		this.mana = this.maxMana = (int) (Math.random() * 50 + 50);
 	}
 
 	public Mage(String name, int health, int minDmg, int maxDmg, int mana) {
@@ -31,7 +31,7 @@ public class Mage extends Player {
 	 * @returns the amount of attack damage that was dealt
 	 */
 	public int attack(Monster monster) {
-		int manaCost = (int) (Math.random() * 1.5 * (this.maxMana / 2) + 1);
+		int manaCost = (int) (Math.random() * 1.35 * (this.maxMana / 2) + 1);
 		if (this.mana >= manaCost) {
 			return manaAttack(manaCost, monster);
 		}
@@ -59,8 +59,10 @@ public class Mage extends Player {
 			this.setMana(this.mana - manaCost);
 			String[] effectsPossible = {"burn","poison","weaken"};
 			String attackType = effectsPossible[(int) (Math.random()*effectsPossible.length)];
-			monster.applyEffect(attackType, (int) (Math.random()*2)+1); //apply random effect for random amount of time
-			System.out.println(this.getName()+" used "+attackType+" on the "+monster.getType());
+			int duration = (int) (Math.random()*2+1);
+			
+			System.out.println(this.getName()+" used "+attackType+" on the "+monster.getType().toLowerCase());
+			monster.applyEffect(attackType, duration);
 			System.out.println(this.getName() + " consumed " + manaCost + " mana");
 			System.out.println(this.getName() + " has " + this.mana + " mana left");
 			return super.attack(monster);

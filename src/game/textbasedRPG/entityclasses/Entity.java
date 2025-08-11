@@ -38,6 +38,8 @@ public abstract class Entity {
         activeEffects.put(effectName.substring(0,1).toUpperCase()+effectName.substring(1).toLowerCase(),
         		duration);
         System.out.println("The " + effectName + " effect was activated for " + duration + " turns");
+        updateEffects();
+        System.out.println();
     }
     
     /**
@@ -64,7 +66,7 @@ public abstract class Entity {
                 activeEffects.put(effect, remaining);
             }
         }
-        System.out.println(this.health+" health points are left");
+        System.out.println(Math.max(0, this.health)+" health points are left");
         System.out.println("Min dmg: "+this.minDmg+", Max dmg: "+this.maxDmg);
     }
     

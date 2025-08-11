@@ -228,8 +228,8 @@ public class Battle {
 				 int extraLevels = monsterLevel - playerLevel; 
 				 if (extraLevels > 0) {
 				     for (int i = 0; i < extraLevels; i++) {
-				         player.levelUp(monsterLevel);
-				         System.out.println("The player has leveled up\n");
+				    	 System.out.println("The player has leveled up\n");
+				         player.levelUp(monsterLevel);  
 				     }
 				 }
 				 System.out.println("\n");
