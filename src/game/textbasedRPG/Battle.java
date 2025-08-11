@@ -258,9 +258,19 @@ public class Battle {
 	 */
 	public static void playerTurn(Player player, Monster monster, Scanner scan) {
 		//player choice
-		System.out.println("Player inventory: "+player.getInventory());
-		System.out.println("Player wearables: "+Arrays.toString(player.getWearables()));
-		System.out.print("Type an inventory slot (1-n) to use the item in that slot or 0 to attack: \n");
+		System.out.println("Player inventory:");
+		int itemsPerRow = 5;
+		for (int i = 0; i < player.getInventoryActual().size(); i++) {
+		    System.out.print((i+1) + ") " + player.getInventoryActual().get(i) + "\t");
+		    if ((i+1) % itemsPerRow == 0) { System.out.println(); }
+		}
+		System.out.println();
+
+		System.out.println("\nPlayer wearables: "+Arrays.toString(player.getWearables()));
+		if (player instanceof Mage) {
+			System.out.println("Player mana: "+((Mage) player).getMana()+"/"+((Mage) player).getMaxMana());
+		}
+		System.out.print("Type an inventory slot (1->"+player.getInventoryActual().size()+") to use the item in that slot or 0 to attack: \n");
 		String userInput = scan.next();
 		System.out.println("\n");
 		int action = 0;
